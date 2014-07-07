@@ -1,0 +1,59 @@
+<resources>
+
+
+
+
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowAnimationStyle">@style/Animation.MyAwesomeAnimation</item>
+    </style>
+
+    <style name="Light" parent="Theme.AppCompat.Light"/>
+    <style name="Dark" parent="Theme.AppCompat"/>
+
+
+
+
+
+
+    <style name="Animation" />
+
+    <style name="Animation.MyAwesomeAnimation" parent="android:style/Animation.Activity">
+        <!--<item name="android:activityOpenEnterAnimation">@anim/activity_open_translate</item>-->
+        <!--<item name="android:activityOpenExitAnimation">@anim/activity_close_scale</item>-->
+        <!--<item name="android:activityCloseEnterAnimation">@anim/activity_open_scale</item>-->
+        <!--<item name="android:activityCloseExitAnimation">@anim/activity_close_translate</item>-->
+
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_next</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_close_main</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_open_main</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_close_next</item>
+    </style>
+
+    <style name="MyBox">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/abc_cab_background_bottom_holo_light</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="MySmallButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/style_button_main_menu</item>
+    </style>
+
+    <style name="mySubBoxButtonArea">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+
+</resources>

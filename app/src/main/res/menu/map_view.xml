@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.korzh.poehali.activities.MapView" >
+
+    <item android:id="@+id/action_switch_map_view"
+        android:title="@string/switch_map_view"
+        app:showAsAction="always|withText" />
+
+
+    <item android:id="@+id/action_setNewRouteManually"
+        android:title="@string/btnSetNewRouteManually"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:showAsAction="never" />
+
+</menu>

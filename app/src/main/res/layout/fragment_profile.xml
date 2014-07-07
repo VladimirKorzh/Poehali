@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <RelativeLayout
+        android:id="@+id/relUserInfo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@style/MyBox">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edtName"
+                android:hint="Имя" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:id="@+id/linPhone"
+            android:layout_below="@+id/linName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <Spinner
+                android:id="@+id/spinnerCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/mobile_codes" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/edtCell"
+                android:layout_gravity="center_horizontal"
+                android:hint="Номер телефона" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linCar"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/linPhone">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edtCar"
+                android:hint="Автомобиль" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linPlate"
+            android:paddingTop="5dp"
+            android:layout_alignParentEnd="false"
+            android:layout_below="@+id/linCar">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edtPlate"
+                android:hint="Номерной знак" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/relUserInfo"
+        android:id="@+id/relContactInfoBtn"
+        style="@style/mySubBoxButtonArea">
+
+        <Button
+            android:text="Сохранить"
+            android:id="@+id/btnSaveInfo"
+            android:layout_alignParentRight="true"
+            android:onClick="onButtonClick"
+            style="@style/MySmallButton" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relStats"
+        android:padding="5dp"
+        android:layout_below="@+id/relContactInfoBtn"
+        android:layout_alignStart="@+id/relContactInfoBtn"
+        style="@style/MyBox"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relBalance"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Баланс"
+                android:id="@+id/textView5"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0 грн"
+                android:id="@+id/textView6"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relBalanceBtn"
+        android:layout_below="@+id/relStats"
+        android:layout_alignLeft="@+id/relStats"
+        android:layout_alignRight="@+id/relStats">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пополнить"
+            android:id="@+id/btnFillBalance"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/style_button_small"
+            android:onClick="onButtonClick" />
+    </RelativeLayout>
+
+</RelativeLayout>

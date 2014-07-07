@@ -1,0 +1,31 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+    defaultConfig {
+        applicationId 'com.korzh.poehali'
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName '1.0'
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:19.+'
+    compile 'com.rabbitmq:amqp-client:+'
+    compile 'com.google.android.gms:play-services:+'
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.googlecode.json-simple:json-simple:1.1'
+    compile 'commons-io:commons-io:2.4'
+}
