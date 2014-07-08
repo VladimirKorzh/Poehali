@@ -16,7 +16,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        style="@style/MyBox">
+        style="@style/MyBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -113,7 +115,9 @@
             android:id="@+id/btnSaveInfo"
             android:layout_alignParentRight="true"
             android:onClick="onButtonClick"
-            style="@style/MySmallButton" />
+            style="@style/MySmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -158,21 +162,20 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relBalanceBtn"
         android:layout_below="@+id/relStats"
-        android:layout_alignLeft="@+id/relStats"
-        android:layout_alignRight="@+id/relStats">
+        style="@style/mySubBoxButtonArea">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Пополнить"
             android:id="@+id/btnFillBalance"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/style_button_small"
-            android:onClick="onButtonClick" />
+            android:onClick="onButtonClick"
+            style="@style/MySmallButton"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 </RelativeLayout>

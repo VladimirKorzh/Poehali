@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.korzh.poehali" >
 
+    <!--Internet Access-->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Location using network and GPS -->
@@ -11,13 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"  /> -->
-    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE"/> -->
 
+    <!--Floating notifications-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!--Global Popups-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -29,6 +27,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
+        <service
+            android:name=".common.interfaces.ServiceFloating"
+            android:exported="true" />
 
         <activity
             android:name=".activities.MainMenu"
@@ -39,21 +40,22 @@
             </intent-filter>
         </activity>
 
-
-
         <activity
             android:name=".activities.MapView"
-            android:label="@string/title_activity_map_view" >
+            android:label="@string/title_activity_map_view"
+            android:parentActivityName=".activities.MainMenu">
         </activity>
 
         <activity
             android:name=".activities.Profile"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".activities.MainMenu">
         </activity>
 
         <activity
             android:name=".activities.PhoneNumberValidation"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".activities.Profile">
 
         </activity>
 

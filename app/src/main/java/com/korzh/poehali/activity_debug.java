@@ -22,24 +22,24 @@
 //import com.google.android.gms.maps.model.CircleOptions;
 //import com.google.android.gms.maps.model.Marker;
 //import com.google.android.gms.maps.model.MarkerOptions;
-//import com.korzh.poehali.interfaces.LocationBroadcaster;
-//import com.korzh.poehali.network.MessageConsumer;
-//import com.korzh.poehali.network.MessageProducer;
-//import com.korzh.poehali.network.NetworkMessage;
-//import com.korzh.poehali.network.packets.OrderPacket;
-//import com.korzh.poehali.network.packets.UserLocationPacket;
-//import com.korzh.poehali.network.packets.frames.LocationJson;
-//import com.korzh.poehali.network.packets.frames.OrderDetailsJson;
-//import com.korzh.poehali.network.packets.frames.UserJson;
-//import com.korzh.poehali.util.C;
-//import com.korzh.poehali.util.G;
-//import com.korzh.poehali.util.U;
+//import com.korzh.poehali.common.interfaces.LocationBroadcaster;
+//import com.korzh.poehali.common.network.MessageConsumer;
+//import com.korzh.poehali.common.network.MessageProducer;
+//import com.korzh.poehali.common.network.NetworkMessage;
+//import com.korzh.poehali.common.network.packets.OrderPacket;
+//import com.korzh.poehali.common.network.packets.UserLocationPacket;
+//import com.korzh.poehali.common.network.packets.frames.LocationJson;
+//import com.korzh.poehali.common.network.packets.frames.OrderDetailsJson;
+//import com.korzh.poehali.common.network.packets.frames.UserJson;
+//import com.korzh.poehali.common.util.C;
+//import com.korzh.poehali.common.util.G;
+//import com.korzh.poehali.common.util.U;
 //
 //import java.util.Random;
 //
 //
 //public class activity_debug extends ActionBarActivity {
-//    private final String TAG = getClass().getName();
+//    private final String TAG = getClass().getSimpleName();
 //    private Context c;
 //
 //    private LocationBroadcaster locationBroadcaster = null;

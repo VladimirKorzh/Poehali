@@ -30,12 +30,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
 import com.korzh.poehali.activities.NavigationRoutePicker;
-import com.korzh.poehali.interfaces.GoogleDirectionsApi;
-import com.korzh.poehali.interfaces.LocationBroadcaster;
-import com.korzh.poehali.interfaces.GlobalAnnounceInterface;
-import com.korzh.poehali.util.C;
-import com.korzh.poehali.util.G;
-import com.korzh.poehali.util.U;
+import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
+import com.korzh.poehali.common.interfaces.LocationBroadcaster;
+import com.korzh.poehali.common.interfaces.GlobalAnnounceInterface;
+import com.korzh.poehali.common.util.C;
+import com.korzh.poehali.common.util.G;
+import com.korzh.poehali.common.util.U;
 
 import org.w3c.dom.Document;
 
@@ -209,15 +209,15 @@ public class MapViewFragment extends Fragment {
         googleMap.setTrafficEnabled(true);
 
         myLocationMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0,0))
+                .position(new LatLng(0, 0))
 //                .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_me))
                 .visible(false)
                 .flat(false));
 
         myDrivingMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0,0))
-  //              .anchor(0.5f, 0.5f)
+                .position(new LatLng(0, 0))
+                        //              .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_driving_me))
                 .visible(false)
                 .flat(true));

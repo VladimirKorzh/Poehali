@@ -15,9 +15,9 @@ import android.widget.Spinner;
 
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.PhoneNumberValidation;
-import com.korzh.poehali.util.C;
-import com.korzh.poehali.util.G;
-import com.korzh.poehali.util.U;
+import com.korzh.poehali.common.util.C;
+import com.korzh.poehali.common.util.G;
+import com.korzh.poehali.common.util.U;
 
 /**
  * Created by vladimir on 7/4/2014.
@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
         boolean result = !(prefix_value.equals(prefix.getSelectedItem().toString()) &&
                 cell_value.equals(cell.getText().toString()));
 
-        U.Log(getClass().getName(),"saved prefix: "+prefix_value+" saved cell: "+cell_value+" res: "+result);
+        U.Log(getClass().getSimpleName(),"saved prefix: "+prefix_value+" saved cell: "+cell_value+" res: "+result);
         return result;
     }
 
@@ -107,7 +107,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        U.Log(getClass().getName(), "onActivityResult " + requestCode + " " + resultCode);
+        U.Log(getClass().getSimpleName(), "onActivityResult " + requestCode + " " + resultCode);
         if (requestCode == C.REQUEST_CODE_VALIDATE_PHONE) {
             if(resultCode == Activity.RESULT_OK){
                 saveCell();

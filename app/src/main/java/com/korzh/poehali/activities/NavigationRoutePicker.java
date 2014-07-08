@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.korzh.poehali.R;
-import com.korzh.poehali.interfaces.GoogleDirectionsApi;
-import com.korzh.poehali.util.C;
-import com.korzh.poehali.util.G;
-import com.korzh.poehali.util.U;
+import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
+import com.korzh.poehali.common.util.C;
+import com.korzh.poehali.common.util.G;
+import com.korzh.poehali.common.util.U;
 
 import org.w3c.dom.Document;
 
@@ -97,14 +97,14 @@ public class NavigationRoutePicker extends ActionBarActivity {
             if(resultCode == RESULT_OK) {
                 String address = data.getStringExtra("address");
                 LatLng coord = data.getParcelableExtra("latlng");
-                U.Log(getClass().getName(), "onActivityResult: "+address+" "+coord);
+                U.Log(getClass().getSimpleName(), "onActivityResult: "+address+" "+coord);
                 if (clicked.getId() == R.id.relPointA) {
-                    U.Log(getClass().getName(), "point A");
+                    U.Log(getClass().getSimpleName(), "point A");
                     startPoint.setText(address);
                     pointA = coord;
                 }
                 if (clicked.getId() == R.id.relPointB) {
-                    U.Log(getClass().getName(), "point B");
+                    U.Log(getClass().getSimpleName(), "point B");
                     endPoint.setText(address);
                     pointB = coord;
                 }

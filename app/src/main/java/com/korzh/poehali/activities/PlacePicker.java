@@ -24,9 +24,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.korzh.poehali.R;
-import com.korzh.poehali.interfaces.GoogleGeocodeApi;
-import com.korzh.poehali.util.C;
-import com.korzh.poehali.util.G;
+import com.korzh.poehali.common.interfaces.GoogleGeocodeApi;
+import com.korzh.poehali.common.util.C;
+import com.korzh.poehali.common.util.G;
 
 public class PlacePicker extends ActionBarActivity implements GoogleMap.OnMapClickListener {
 

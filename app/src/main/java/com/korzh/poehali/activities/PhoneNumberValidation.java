@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.interfaces.MOTPPhoneConfirmAPI;
+import com.korzh.poehali.common.interfaces.MOTPPhoneConfirmAPI;
 
 public class PhoneNumberValidation extends Activity {
 
