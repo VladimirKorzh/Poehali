@@ -2,7 +2,7 @@ package com.korzh.poehali.util;
 
 import android.util.Log;
 
-import com.korzh.poehali.network.packets.frames.LocationFrame;
+import com.korzh.poehali.network.packets.frames.LocationJson;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ public class U {
         if (C.DEBUG_LOG) Log.d(tag, msg);
     }
 
-    public static LocationFrame getRandomLocation(double y0, double x0, int radius) {
+    public static LocationJson getRandomLocation(double y0, double x0, int radius) {
         // returns a random location within radius in meters
 
         Random random = new Random();
@@ -34,7 +34,7 @@ public class U {
 
         double foundLongitude = new_x + x0;
         double foundLatitude = y + y0;
-        return new LocationFrame(foundLatitude, foundLongitude);
+        return new LocationJson(foundLatitude, foundLongitude);
     }
 
 

@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.interfaces.MOTPLoginAPI;
+import com.korzh.poehali.interfaces.MOTPPhoneConfirmAPI;
 
 public class PhoneNumberValidation extends Activity {
 
     private InputMethodManager inputMethodManager;
 
-    private MOTPLoginAPI motpLoginAPI = null;
+    private MOTPPhoneConfirmAPI motpPhoneConfirmAPI = null;
 
     private RelativeLayout relCode = null;
     private RelativeLayout relPhone = null;
@@ -38,8 +38,8 @@ public class PhoneNumberValidation extends Activity {
 
         Bundle b = getIntent().getExtras();
         String number = b.getString("number");
-        motpLoginAPI = new MOTPLoginAPI(this);
-        motpLoginAPI.verifyPhoneNumber(number);
+        motpPhoneConfirmAPI = new MOTPPhoneConfirmAPI(this);
+        motpPhoneConfirmAPI.verifyPhoneNumber(number);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class PhoneNumberValidation extends Activity {
                 break;
 
             case R.id.btnCodeEntered:
-                    if (motpLoginAPI.validateCode(String.valueOf(editCode.getText()))){
+                    if (motpPhoneConfirmAPI.validateCode(String.valueOf(editCode.getText()))){
                         // code valid
                         setResult(RESULT_OK,returnIntent);
                         finish();

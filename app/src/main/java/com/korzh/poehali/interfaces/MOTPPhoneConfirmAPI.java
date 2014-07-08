@@ -26,12 +26,12 @@ import java.util.List;
 /**
  * Created by vladimir on 7/6/2014.
  */
-public class MOTPLoginAPI {
+public class MOTPPhoneConfirmAPI {
 
     private String LastCode = null;
     private Context context = null;
 
-    public MOTPLoginAPI(Context c){
+    public MOTPPhoneConfirmAPI(Context c){
         this.context = c;
     }
 

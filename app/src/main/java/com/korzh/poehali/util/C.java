@@ -20,10 +20,6 @@ public class C {
     public static final double ORDER_SEARCH_RADIUS = 2000; // in meters
 
 
-
-    // UserID:isFree@lat,lon
-    public final static String LOCATION_FRAME_SEPARATOR = ",";
-    public static final String USER_FRAME_SEPARATOR = ":";
     public static final String PACKET_FRAME_SEPARATOR = "@";
     public static final String ORDER_FRAME_SEPARATOR = "!";
 
@@ -74,4 +70,9 @@ public class C {
     public static final int REQUEST_CODE_VALIDATE_PHONE = 1;
     public static final int REQUEST_CODE_ADDRESS_INPUT = 2;
     public static final int REQUEST_CODE_NEW_ROUTE = 3;
+
+
+
+    // Global Announce interface
+    public static final int ANNOUNCE_PACKET_POLICE = 1;
 }

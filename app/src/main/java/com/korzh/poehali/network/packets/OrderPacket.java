@@ -2,35 +2,47 @@ package com.korzh.poehali.network.packets;
 
 import android.location.Location;
 
-import com.korzh.poehali.network.packets.frames.LocationFrame;
-import com.korzh.poehali.network.packets.frames.OrderDetailsFrame;
-import com.korzh.poehali.network.packets.frames.UserFrame;
+import com.korzh.poehali.network.packets.frames.LocationJson;
+import com.korzh.poehali.network.packets.frames.NetworkObjectBase;
+import com.korzh.poehali.network.packets.frames.OrderDetailsJson;
+import com.korzh.poehali.network.packets.frames.UserJson;
 import com.korzh.poehali.util.C;
+import com.korzh.poehali.util.U;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by vladimir on 7/1/2014.
  */
-public class OrderPacket {
-    private UserFrame userFrame;
-    private LocationFrame userLocationFrameOrigin;
-    private LocationFrame userLocationFrameDestination;
-    private OrderDetailsFrame orderDetailsFrame;
+public class OrderPacket extends NetworkObjectBase{
+    private UserJson userFrame;
+    private LocationJson userLocationFrameOrigin;
+    private LocationJson userLocationFrameDestination;
+    private OrderDetailsJson orderDetailsJson;
 
-    public OrderPacket(String str){
-        String[] strings = str.split(C.PACKET_FRAME_SEPARATOR);
-        this.userFrame = new UserFrame(strings[0]);
-        this.userLocationFrameOrigin = new LocationFrame(strings[1]);
-        this.userLocationFrameDestination = new LocationFrame(strings[2]);
-        this.orderDetailsFrame = new OrderDetailsFrame(strings[3]);
-        CalculateRouteDistance();
+    public OrderPacket(JSONObject obj){
+        super(obj);
+        this.userFrame = new UserJson(obj.get("user"));
+        this.userLocationFrameOrigin = new LocationJson(obj.get("origin"));
+        this.userLocationFrameDestination = new LocationJson(obj.get("dest"));
+        this.orderDetailsJson = new OrderDetailsJson(obj.get("details"));
     }
 
-    public OrderPacket(UserFrame user, LocationFrame origin, LocationFrame dest, OrderDetailsFrame order){
+    public OrderPacket(UserJson user, LocationJson origin, LocationJson dest, OrderDetailsJson order){
+        super();
         this.userFrame = user;
         this.userLocationFrameOrigin = origin;
         this.userLocationFrameDestination = dest;
-        this.orderDetailsFrame = order;
-        CalculateRouteDistance();
+        this.orderDetailsJson = order;
+        try {
+            jsonObject.put("user",user);
+            jsonObject.put("origin", origin);
+            jsonObject.put("dest", dest);
+            jsonObject.put("details", order);
+        } catch (JSONException e) {
+            U.Log(getClass().getName(),"Error writing json");
+        }
     }
 
     public boolean isWithinRange(Location myLocation){
@@ -41,31 +53,16 @@ public class OrderPacket {
         return dist[0] <= C.ORDER_SEARCH_RADIUS;
     }
 
-    private void CalculateRouteDistance() {
-        //TODO Implement this
-    }
-
-
-
-    public String toString(){
-        return userFrame.toString()+C.PACKET_FRAME_SEPARATOR+userLocationFrameOrigin.toString()+
-                C.PACKET_FRAME_SEPARATOR+userLocationFrameDestination.toString()+C.PACKET_FRAME_SEPARATOR+
-                orderDetailsFrame.toString();
-    }
-
-    public UserFrame getUserFrame(){
+    public UserJson getUserFrame(){
         return userFrame;
     }
-
-    public LocationFrame getUserLocationFrameOrigin() {
+    public LocationJson getUserLocationFrameOrigin() {
         return userLocationFrameOrigin;
     }
-
-    public LocationFrame getUserLocationFrameDestination() {
+    public LocationJson getUserLocationFrameDestination() {
         return userLocationFrameDestination;
     }
-
-    public OrderDetailsFrame getOrderDetailsFrame() {
-        return orderDetailsFrame;
+    public OrderDetailsJson getOrderDetailsJson() {
+        return orderDetailsJson;
     }
 }

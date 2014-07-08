@@ -32,7 +32,7 @@ import com.korzh.poehali.activities.MapView;
 import com.korzh.poehali.activities.NavigationRoutePicker;
 import com.korzh.poehali.interfaces.GoogleDirectionsApi;
 import com.korzh.poehali.interfaces.LocationBroadcaster;
-import com.korzh.poehali.interfaces.PoliceLocationInterface;
+import com.korzh.poehali.interfaces.GlobalAnnounceInterface;
 import com.korzh.poehali.util.C;
 import com.korzh.poehali.util.G;
 import com.korzh.poehali.util.U;
@@ -51,7 +51,7 @@ public class MapViewFragment extends Fragment {
 
     private Location lastKnownLocation = null;
 
-    private PoliceLocationInterface policeLocationInterface = null;
+    private GlobalAnnounceInterface globalAnnounceInterface = null;
     private LocationBroadcaster locationBroadcaster = null;
 
     private RelativeLayout sendMarkPolice = null;
@@ -84,8 +84,8 @@ public class MapViewFragment extends Fragment {
             googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
-                policeLocationInterface = new PoliceLocationInterface(googleMap);
-                policeLocationInterface.updatePoliceLocations();
+                globalAnnounceInterface = new GlobalAnnounceInterface(googleMap);
+                globalAnnounceInterface.getWhatsAnnouncedGlobally();
                 locationBroadcaster = new LocationBroadcaster(getActivity(), googleMap);
                 locationBroadcaster.StartBroadcast();
                 locationBroadcaster.StartListener();
@@ -341,7 +341,7 @@ public class MapViewFragment extends Fragment {
     }
 
     public void userActionMarkPolice(View v){
-        policeLocationInterface.markPolice();
+        globalAnnounceInterface.announcePolice();
     }
 
 

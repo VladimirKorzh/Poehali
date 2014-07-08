@@ -10,11 +10,14 @@ import com.korzh.poehali.network.MessageConsumer;
 import com.korzh.poehali.network.MessageProducer;
 import com.korzh.poehali.network.NetworkMessage;
 import com.korzh.poehali.network.packets.UserLocationPacket;
-import com.korzh.poehali.network.packets.frames.LocationFrame;
-import com.korzh.poehali.network.packets.frames.UserFrame;
+import com.korzh.poehali.network.packets.frames.LocationJson;
+import com.korzh.poehali.network.packets.frames.UserJson;
 import com.korzh.poehali.util.C;
 import com.korzh.poehali.util.G;
 import com.korzh.poehali.util.U;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by vladimir on 7/1/2014.
@@ -41,8 +44,8 @@ public class LocationBroadcaster {
             msg.setExchange(C.DEFAULT_LOCATIONS_EXCHANGE);
             msg.setExchangeType("direct");
 
-            UserFrame user = new UserFrame(true);
-            LocationFrame loc = new LocationFrame(location.getLatitude(),location.getLongitude());
+            UserJson user = new UserJson(true);
+            LocationJson loc = new LocationJson(location.getLatitude(),location.getLongitude());
             UserLocationPacket pkt = new UserLocationPacket(user,loc);
 
             msg.setData(pkt.toString());
@@ -71,8 +74,14 @@ public class LocationBroadcaster {
         locationConsumer = new MessageConsumer();
         locationConsumer.setOnReceiveMessageHandler(new MessageConsumer.OnReceiveMessageHandler() {
             public void onReceiveMessage(byte[] message) {
+                JSONObject obj = null;
                 String data = new String(message);
-                UserLocationPacket userLocationPacket = new UserLocationPacket(data);
+                try {
+                    obj = new JSONObject(data);
+                } catch (JSONException e) {
+                    U.Log(getClass().getName(),"Error reading json");
+                }
+                UserLocationPacket userLocationPacket = new UserLocationPacket(obj);
                 U.Log(TAG, "Received location: " + userLocationPacket.toString());
                 if (!G.getInstance().userId.equals(userLocationPacket.getUserFrame().getUserId()))
                     new TaxiDriverMarker(googleMap, userLocationPacket);

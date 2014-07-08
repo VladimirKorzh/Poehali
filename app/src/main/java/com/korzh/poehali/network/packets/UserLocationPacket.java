@@ -1,36 +1,48 @@
 package com.korzh.poehali.network.packets;
 
-import com.korzh.poehali.network.packets.frames.LocationFrame;
-import com.korzh.poehali.network.packets.frames.UserFrame;
-import com.korzh.poehali.util.C;
+import com.korzh.poehali.network.packets.frames.LocationJson;
+import com.korzh.poehali.network.packets.frames.NetworkObjectBase;
+import com.korzh.poehali.network.packets.frames.UserJson;
+import com.korzh.poehali.util.U;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by vladimir on 7/1/2014.
  */
-public class UserLocationPacket {
-    private UserFrame userFrame;
-    private LocationFrame locationFrame;
+public class UserLocationPacket extends NetworkObjectBase {
+    private UserJson userFrame;
+    private LocationJson locationFrame;
 
-    public UserLocationPacket(UserFrame u, LocationFrame l){
+    public UserLocationPacket(UserJson u, LocationJson l){
+        super();
+
         this.userFrame = u;
         this.locationFrame = l;
+        try {
+            jsonObject.put("user", userFrame);
+            jsonObject.put("loc", locationFrame);
+        } catch (JSONException e) {
+            U.Log(getClass().getName(), "Error writing json object");
+        }
+
     }
 
-    public UserLocationPacket(String s){
-        String[] strings = s.split(C.PACKET_FRAME_SEPARATOR);
-        this.userFrame = new UserFrame(strings[0]);
-        this.locationFrame = new LocationFrame(strings[1]);
+    public UserLocationPacket(JSONObject obj){
+        super(obj);
+        try {
+            this.userFrame = new UserJson(obj.getJSONObject("user"));
+            this.locationFrame = new LocationJson(obj.getJSONObject("loc"));
+        } catch (JSONException e) {
+            U.Log(getClass().getName(), "Error reading json object");
+        }
     }
 
-    public String toString(){
-        return userFrame.toString() + C.PACKET_FRAME_SEPARATOR + locationFrame.toString();
-    }
-
-    public LocationFrame getLocationFrame() {
+    public LocationJson getLocationFrame() {
         return locationFrame;
     }
-
-    public UserFrame getUserFrame() {
+    public UserJson getUserFrame() {
         return userFrame;
     }
 }

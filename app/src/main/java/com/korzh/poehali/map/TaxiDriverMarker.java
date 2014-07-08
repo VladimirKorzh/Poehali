@@ -11,27 +11,23 @@ import com.korzh.poehali.R;
 import com.korzh.poehali.network.packets.UserLocationPacket;
 import com.korzh.poehali.util.C;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Created by vladimir on 7/1/2014.
  */
-public class TaxiDriverMarker {
+public class TaxiDriverMarker extends MapMarkerBase {
     public TaxiDriverMarker(GoogleMap googleMap, UserLocationPacket userLocationPacket){
 
-        List<BitmapDescriptor> imgs = new ArrayList<BitmapDescriptor>();
-        imgs.add(BitmapDescriptorFactory.fromResource(R.drawable.img_police));
-        imgs.add(BitmapDescriptorFactory.fromResource(R.drawable.img_passenger));
-        imgs.add(BitmapDescriptorFactory.fromResource(R.drawable.img_taxibusy));
-        imgs.add(BitmapDescriptorFactory.fromResource(R.drawable.img_taxifree));
+        BitmapDescriptor img = null;
+        if (userLocationPacket.getUserFrame().isFree()){
+            img = BitmapDescriptorFactory.fromResource(R.drawable.img_taxifree);
+        }
+        else {
+            img = BitmapDescriptorFactory.fromResource(R.drawable.img_taxibusy);
+        }
 
-        Random rnd = new Random();
-
-        final Marker m = googleMap.addMarker(new MarkerOptions()
+        marker = googleMap.addMarker(new MarkerOptions()
                 .position(userLocationPacket.getLocationFrame().getLatLng())
-                .icon(imgs.get(rnd.nextInt(imgs.size()))));
+                .icon(img);
 
         Handler handler = new Handler();
         Runnable removeMarker = new Runnable(){
