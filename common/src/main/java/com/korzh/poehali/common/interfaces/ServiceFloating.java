@@ -54,7 +54,7 @@ public class ServiceFloating extends Service {
 
         chatHead = new ImageView(this);
 
-        chatHead.setImageResource(R.drawable.ic_launcher);
+        chatHead.setImageResource(R.drawable.ic_floating);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,

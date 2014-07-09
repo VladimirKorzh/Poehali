@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
+import com.korzh.poehali.activities.OrdersView;
 import com.korzh.poehali.activities.Profile;
 
 /**
@@ -33,7 +34,8 @@ public class MainMenuFragment extends Fragment{
         rootView.findViewById(R.id.relMainMenuOrders).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(getActivity(), OrdersView.class);
+                startActivity(i);
             }
         });
 

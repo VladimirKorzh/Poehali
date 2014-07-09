@@ -15,24 +15,10 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relPointB"
+        android:id="@+id/relValidationInfo"
         android:padding="15dp"
         android:visibility="visible"
         style="@style/MyBox">
-
-        <EditText
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:id="@+id/edtConfirmationCode"
-            android:phoneNumber="true"
-            android:layout_below="@+id/textView2"
-            android:paddingTop="20dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_centerHorizontal="true"
-            android:hint="XYZ" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,26 +32,20 @@
 
     </RelativeLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="OK"
-        android:id="@+id/btnCodeEntered"
-        android:onClick="onButtonClick"
-        style="@style/MySmallButton"
-        android:layout_below="@+id/relPointB"
-        android:layout_alignRight="@+id/relPointB"
-        android:layout_alignEnd="@+id/relPointB" />
+        style="@style/mySubBoxButtonArea"
+        android:layout_below="@+id/relValidationInfo"
+        android:gravity="right">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BACK"
-        android:id="@+id/btnCancelVerification"
-        android:onClick="onButtonClick"
-        style="@style/MySmallButton"
-        android:layout_below="@+id/relPointB"
-        android:layout_alignLeft="@+id/relPointB"
-        android:layout_alignStart="@+id/relPointB" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_action_back_cancel_verification"
+            android:id="@+id/btnCancelVerification"
+            android:onClick="onButtonClick"
+            style="@style/MySmallButton" />
+    </RelativeLayout>
 
 </RelativeLayout>

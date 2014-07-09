@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import com.korzh.poehali.common.interfaces.GoogleGeocodeApi;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 
-public class PlacePicker extends ActionBarActivity implements GoogleMap.OnMapClickListener {
+public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickListener {
 
     private GoogleMap googleMap = null;
     private Marker selected_position_marker = null;
@@ -151,13 +150,6 @@ public class PlacePicker extends ActionBarActivity implements GoogleMap.OnMapCli
             finish();
             return true;
         }
-
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -2,7 +2,6 @@ package com.korzh.poehali.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,7 @@ import org.w3c.dom.Document;
 /**
  * Created by vladimir on 7/5/2014.
  */
-public class NavigationRoutePicker extends ActionBarActivity {
+public class NavigationRoutePicker extends ActivityBase {
 
     private View clicked = null;
     private TextView startPoint = null;

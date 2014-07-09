@@ -55,7 +55,7 @@ public class G {
 
     public void checkGPSEnabled(final Context context){
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(context, "GPS is Enabled in your device", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.toast_gps_is_enabled), Toast.LENGTH_SHORT).show();
         } else{
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setMessage(context.getString(R.string.msgGpsIsDisabled))

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Поехали</string>
+
     <!--Main menu activity strings    -->
+    <string name="title_activity_mainmenu">Поехали</string>
+
     <string name="desctiption_logo">Логотип Поехали</string>
     <string name="description_background">Фон приложения</string>
 
@@ -15,57 +19,50 @@
     <string name="lbl_main_menu_btn_settings">Настройки</string>
     <string name="lbl_main_menu_btn_profile">Профиль</string>
 
+    <!--Orders view activity strings-->
+    <string name="title_activity_orders_view">Заказы</string>
 
-
-
-
-    <string name="app_name">Poehali</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="orders">Заказы</string>
+    <!--Map view activity strings-->
     <string name="title_activity_map_view">Поехали</string>
     <string name="switch_map_view">Переключить вид</string>
-    <string name="btnUpdatePoliceLocations">Обновить ДПС</string>
+
     <string name="msgGpsIsDisabled">GPS выключен. Для полноценной работы приложения необходимо его включить.</string>
     <string name="dlgBtnEnableGps">Настройки</string>
     <string name="dlgBtnCancel">Отмена</string>
-    <string name="action_drawer_header">Поехали</string>
-    <string name="menu_navigator">Навигатор</string>
-    <string name="drawer_open">Меню открыто</string>
-    <string name="drawer_close">Меню закрыто</string>
-    <string name="menu_orders">Заказы</string>
-    <string name="menu_profile">Профиль</string>
-    <string name="btnSetNewRouteManually">Задать маршрут</string>
-    <string name="action_select_location">Продолжить</string>
-    <string name="title_activity_route_picker">Маршрут</string>
-    <string name="title_activity_place_picker">Выбор места</string>
-    <string name="title_activity_login">Login</string>
+
+    <!--Profile strings-->
+    <string name="title_activity_profile">Профиль</string>
+    <string name="btn_save_profile">Сохранить</string>
+    <string-array name="mobile_codes">
+        <item>+38</item>
+    </string-array>
+
+    <!--Phone verification strings-->
+    <string name="title_activity_login">Подтверждение личности</string>
     <string name="dialog_title_error">Произошла ошибка</string>
     <string name="dialog_msg_number_error">Проверьте правильность ввода</string>
     <string name="dialog_title_confirmation_code_valid">Подтверждение личности</string>
     <string name="dialog_msg_auth_ok">Аутентификация прошла успешно</string>
-    <string name="dialog_msg_validate_phone_before_code">enter phone number first</string>
-    <string name="dialog_msg_auth_code_invalid">Code is invalid</string>
-    <string name="dialog_msg_progress_busy">Working...</string>
-    <string name="btn_save_profile">Сохранить</string>
-    <string name="title_activity_mainmenu">Поехали</string>
-    <string name="title_activity_profile">Профиль</string>
-
+    <string name="dialog_msg_validate_phone_before_code">Сначала номер, потом код.</string>
+    <string name="dialog_msg_auth_code_invalid">Проверьте правильность ввода</string>
     <string name="txt_phone_verification_info">
         Для подтверждения введенного номера телефона, в течении нескольких секунд Вам позвонят.
-        Введите последние три цифры номера телефона с которого Вам звонили.
+        Не волнуйтесь, брать трубку не нужно. Программа сама все сделает.
     </string>
+
+    <!--Settings new route strings-->
+    <string name="title_activity_route_picker">Маршрут</string>
+    <string name="title_activity_place_picker">Выбор места</string>
+    <string name="btnSetNewRouteManually">Задать маршрут</string>
+    <string name="action_select_location">Продолжить</string>
     <string name="msg_geocode_working">Получаем информацию о местоположении</string>
 
-    <string-array name="mobile_codes">
-        <item>+38</item>
-    </string-array>
+    <string name="dialog_msg_progress_busy">Пожалуйста подождите</string>
+    <string name="toast_gps_is_enabled">GPS is Enabled in your device</string>
+    <string name="btn_action_back_cancel_verification">Назад</string>
+    <string name="toast_number_confirmation_error">Ошибка подтверждения номера. Проверьте ввод</string>
+    <string name="toast_number_confirmed">Номер успешно подтвержден</string>
+    <string name="share">Поделиться</string>
+
 
 </resources>

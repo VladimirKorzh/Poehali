@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.PhoneNumberValidation;
@@ -111,9 +112,11 @@ public class ProfileFragment extends Fragment {
         if (requestCode == C.REQUEST_CODE_VALIDATE_PHONE) {
             if(resultCode == Activity.RESULT_OK){
                 saveCell();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.toast_number_confirmed), Toast.LENGTH_LONG).show();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 cellNotConfirmed();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.toast_number_confirmation_error), Toast.LENGTH_LONG).show();
             }
         }
     }

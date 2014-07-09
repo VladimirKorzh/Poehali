@@ -66,12 +66,9 @@ public class MapViewFragment extends Fragment {
 
         double lat2 = Math.asin( Math.sin(lat1)*Math.cos(dist) + Math.cos(lat1)*Math.sin(dist)*Math.cos(brng) );
         double a = Math.atan2(Math.sin(brng)*Math.sin(dist)*Math.cos(lat1), Math.cos(dist)-Math.sin(lat1)*Math.sin(lat2));
-        System.out.println("a = " +  a);
         double lon2 = lon1 + a;
 
         lon2 = (lon2+ 3*Math.PI) % (2*Math.PI) - Math.PI;
-
-        System.out.println("Latitude = "+Math.toDegrees(lat2)+"\nLongitude = "+Math.toDegrees(lon2));
 
         return new LatLng(Math.toDegrees(lat2),Math.toDegrees(lon2));
     }
@@ -279,10 +276,6 @@ public class MapViewFragment extends Fragment {
 
         setUpMapIfNeeded();
         setHasOptionsMenu(true);
-
-
-
-
 
         return rootView;
     }

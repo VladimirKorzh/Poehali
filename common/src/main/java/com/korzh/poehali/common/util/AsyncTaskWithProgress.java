@@ -15,6 +15,7 @@ public abstract class AsyncTaskWithProgress<T,T1,T2> extends AsyncTask<T,T1,T2>{
 
     public AsyncTaskWithProgress(Context activity) {
         dialog = new ProgressDialog(activity);
+        dialog.setCancelable(false);
         this.context = activity;
     }
 

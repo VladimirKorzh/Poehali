@@ -1,6 +1,8 @@
 package com.korzh.poehali.common.interfaces;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.CallLog;
 
 import com.korzh.poehali.common.R;
 import com.korzh.poehali.common.util.AsyncTaskWithProgress;
@@ -28,7 +30,6 @@ import java.util.List;
  */
 public class MOTPPhoneConfirmAPI {
 
-    private String LastCode = null;
     private Context context = null;
 
     public MOTPPhoneConfirmAPI(Context c){
@@ -39,21 +40,15 @@ public class MOTPPhoneConfirmAPI {
         new LoginSequence(context).execute(number);
     }
 
-    public boolean validateCode(String code){
-        if (LastCode == null) {
-            U.Log(getClass().getSimpleName(),"ERROR: LastCode == null");
-            return false;
-        }
+    private onVerificationResultHandler resultHandler;
 
-        if (code.equals(LastCode)){
-            return true;
-        }
-        else {
-            G.getInstance().showInfoDialog(context, context.getString(R.string.dialog_title_error), context.getString(R.string.dialog_msg_auth_code_invalid));
-            return false;
-        }
+    public void setResultHandler(onVerificationResultHandler resultHandler) {
+        this.resultHandler = resultHandler;
     }
 
+    public interface onVerificationResultHandler {
+        public void onReceiveResult(boolean result);
+    };
 
 
     private class LoginSequence extends AsyncTaskWithProgress<String, Void, String> {
@@ -64,11 +59,24 @@ public class MOTPPhoneConfirmAPI {
 
         @Override
         protected String doInBackground(String... cellPhoneNumber) {
-            verifyUsersPhone(cellPhoneNumber[0]);
+            String sid = verifyUsersPhone(cellPhoneNumber[0]);
+            String callerNumber = decodeCallerNumber(sid);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String lastNumber = getLastCallingNumber();
+            boolean verificationResult = false;
+            if (callerNumber != null && lastNumber != null)
+                if (callerNumber.equals(lastNumber)){
+                    verificationResult = true;
+                }
+            resultHandler.onReceiveResult(verificationResult);
             return "done";
         }
 
-        private void verifyUsersPhone(String phoneNumber) {
+        private String verifyUsersPhone(String phoneNumber) {
             HttpClient httpClient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(C.MOTP_ENDPOINT_CALL + String.valueOf(phoneNumber));
             try {
@@ -85,7 +93,7 @@ public class MOTPPhoneConfirmAPI {
                 U.Log(getClass().getSimpleName(),"Status: "+status+" Result: "+result);
 
                 if (status.equals("Success")){
-                    decodeCallerNumber(result);
+                    return result;
                 }
                 else {
                     G.getInstance().showInfoDialog(context, context.getString(R.string.dialog_title_error), context.getString(R.string.dialog_msg_number_error));
@@ -93,10 +101,11 @@ public class MOTPPhoneConfirmAPI {
             } catch (Exception e) {
                 U.Log(getClass().getSimpleName(), "Authentication error: " + e.getMessage());
             }
+            return null;
         }
 
 
-        private void decodeCallerNumber(String sid){
+        private String decodeCallerNumber(String sid){
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(C.MOTP_ENDPOINT_CONFIRM + sid);
             try {
@@ -117,11 +126,24 @@ public class MOTPPhoneConfirmAPI {
                 U.Log(getClass().getSimpleName(),"Status: "+status+" Result: "+result);
 
                 if (status.equals("Success")){
-                    LastCode = result.substring(7);
+                    return result;
                 }
             } catch (Exception e) {
                 U.Log(getClass().getSimpleName(), "Authentication error: " + e.getMessage());
             }
+            return null;
+        }
+
+        private String getLastCallingNumber(){
+            String[] projection = new String[]{CallLog.Calls.NUMBER};
+            Cursor cur = context.getContentResolver().query(CallLog.Calls.CONTENT_URI,
+                    projection, null, null, CallLog.Calls.DATE +" desc");
+            int numberColumn = cur.getColumnIndex(CallLog.Calls.NUMBER);
+            cur.moveToFirst();
+            String number = cur.getString(numberColumn);
+            number = number.substring(1);
+            U.Log(getClass().getSimpleName(), "Last number: " + number);
+            return number;
         }
     }
 }

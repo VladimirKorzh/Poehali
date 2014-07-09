@@ -4,18 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.ShareActionProvider;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.fragments.ProfileFragment;
+import com.korzh.poehali.fragments.OrdersFragment;
 
-/**
- * Created by vladimir on 7/7/2014.
- */
-public class Profile extends ActivityBase {
+public class OrdersView extends ActivityBase {
 
-    private ProfileFragment profileFragment = null;
-    ShareActionProvider mShareActionProvider;
+    private OrdersFragment ordersFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +18,13 @@ public class Profile extends ActivityBase {
 
         setContentView(R.layout.activity_profile);
 
-        profileFragment = new ProfileFragment();
+        ordersFragment = new OrdersFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, profileFragment)
+                .replace(R.id.container, ordersFragment)
                 .commit();
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -40,6 +33,7 @@ public class Profile extends ActivityBase {
     }
 
     public void onButtonClick(View v){
-        profileFragment.onButtonClick(v);
+        ordersFragment.onButtonClick(v);
     }
 }
+

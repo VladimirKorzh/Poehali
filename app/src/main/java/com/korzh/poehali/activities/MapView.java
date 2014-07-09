@@ -3,13 +3,12 @@ package com.korzh.poehali.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.korzh.poehali.R;
 import com.korzh.poehali.fragments.MapViewFragment;
 
-public class MapView extends ActionBarActivity {
+public class MapView extends ActivityBase {
 
     public MapViewFragment mapViewFragment;
 

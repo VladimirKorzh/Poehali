@@ -3,18 +3,17 @@ package com.korzh.poehali.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.fragments.MainMenuFragment;
 import com.korzh.poehali.common.interfaces.ServiceFloating;
 import com.korzh.poehali.common.util.G;
+import com.korzh.poehali.fragments.MainMenuFragment;
 
 /**
  * Created by vladimir on 7/7/2014.
  */
-public class MainMenu extends ActionBarActivity {
+public class MainMenu extends ActivityBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

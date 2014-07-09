@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.korzh.poehali" >
 
-    <!--Internet Access-->
+    <!-- Internet Access -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Location using network and GPS -->
@@ -13,9 +13,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <!--Floating notifications-->
+    <!-- Floating notifications -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <!--Automatic phone number confirmation can read the last call-->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -27,47 +29,53 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <service
-            android:name=".common.interfaces.ServiceFloating"
-            android:exported="true" />
 
         <activity
             android:name=".activities.MainMenu"
-            android:label="@string/title_activity_mainmenu" >
+            android:label="@string/title_activity_mainmenu"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.MapView"
             android:label="@string/title_activity_map_view"
-            android:parentActivityName=".activities.MainMenu">
+            android:parentActivityName=".activities.MainMenu"
+            android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".activities.MainMenu">
+            android:parentActivityName=".activities.MainMenu"
+            android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".activities.PhoneNumberValidation"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".activities.Profile">
-
+            android:parentActivityName=".activities.Profile"
+            android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".activities.NavigationRoutePicker"
             android:label="@string/title_activity_route_picker"
-            android:parentActivityName=".activities.MapView" >
+            android:parentActivityName=".activities.MapView"
+            android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".activities.PlacePicker"
             android:label="@string/title_activity_place_picker"
-            android:parentActivityName=".activities.NavigationRoutePicker" >
+            android:parentActivityName=".activities.NavigationRoutePicker"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name=".activities.OrdersView"
+            android:label="@string/title_activity_orders_view"
+            android:parentActivityName=".activities.MainMenu"
+            android:theme="@style/AppTheme">
         </activity>
 
         <meta-data
@@ -77,7 +85,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
+        <service
+            android:name=".common.interfaces.ServiceFloating"
+            android:exported="true" />
     </application>
 
 </manifest>
