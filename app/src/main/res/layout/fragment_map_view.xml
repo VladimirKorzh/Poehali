@@ -10,31 +10,30 @@
         android:layout_height="match_parent"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            style="@style/MySmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/btnMarkPolice"
-            android:clickable="true">
-
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/imageView"
-                android:src="@drawable/img_police"
-                android:scaleType="fitXY"
-                android:layout_margin="5dp" />
+            android:clickable="true"
+            android:background="@drawable/style_order_list_item"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
 
         </RelativeLayout>
 
-    </FrameLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnNewRoute"
+            android:background="@drawable/style_order_list_item"
+            android:layout_above="@+id/btnMarkPolice"
+            android:layout_alignLeft="@+id/btnMarkPolice"
+            android:layout_alignStart="@+id/btnMarkPolice"></RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

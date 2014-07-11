@@ -27,17 +27,18 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
-import com.korzh.poehali.activities.NavigationRoutePicker;
+import com.korzh.poehali.dialogs.NewNavigationRoute;
+import com.korzh.poehali.common.interfaces.GlobalAnnounceInterface;
 import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
 import com.korzh.poehali.common.interfaces.LocationBroadcaster;
-import com.korzh.poehali.common.interfaces.GlobalAnnounceInterface;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.common.util.U;
 
-import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 public class MapViewFragment extends Fragment {
 
@@ -55,7 +56,32 @@ public class MapViewFragment extends Fragment {
     private LocationBroadcaster locationBroadcaster = null;
 
     private RelativeLayout sendMarkPolice = null;
-    private GoogleDirectionsApi gd = null;
+
+    private NodeList currentRoute = null;
+    private Polyline currentRoutePolyline = null;
+    private Marker   pointAMarker = null;
+    private Marker   pointBMarker = null;
+
+
+
+
+
+
+    public void ClearCurrentRoute(){
+        if (currentRoutePolyline != null) currentRoutePolyline.remove();
+        if (pointAMarker != null) pointAMarker.remove();
+        if (pointBMarker != null) pointBMarker.remove();
+    }
+
+    public void userActionMarkPolice(View v){
+        globalAnnounceInterface.announcePolice();
+    }
+
+
+
+
+
+
 
 
     private LatLng getMapCenterForDriving(LatLng latLng, double bearing, float distance){
@@ -72,7 +98,6 @@ public class MapViewFragment extends Fragment {
 
         return new LatLng(Math.toDegrees(lat2),Math.toDegrees(lon2));
     }
-
 
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
@@ -102,7 +127,18 @@ public class MapViewFragment extends Fragment {
 
                 if (MAP_MODE == C.MAP_MODE_NAVIGATION) {
                     // play the animation in navigation move
-                    float bearing = lastKnownLocation.bearingTo(location);
+
+                    float bearing = 0.0f;
+                    if (location.hasBearing()){
+                        // if the location provided by the system has information about
+                        // device bearing -> use it.
+                        bearing = location.getBearing();
+                    }
+                    else {
+                        // If there is no such information -> calculate bearing
+                        // based on the two last location changes
+                        bearing = lastKnownLocation.bearingTo(location);
+                    }
 
                     LatLng cameraDrivingPos = getMapCenterForDriving(latLng,bearing,1);
 
@@ -114,6 +150,7 @@ public class MapViewFragment extends Fragment {
                             .build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
+
                 if (MAP_MODE == C.MAP_MODE_BIRDVIEW){
                     // play the animation in birdview
                     CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -127,7 +164,11 @@ public class MapViewFragment extends Fragment {
                 myDrivingMarker.setPosition(latLng);
                 mySearchRadiusCircle.setCenter(latLng);
             }
+            // remember location to prevent very fast map updates
             if (lastKnownLocation == null) lastKnownLocation = location;
+
+            // if we are using the manual bearing calculation system
+            // remember our previous location
             if (lastKnownLocation.distanceTo(location) > C.MIN_BEARING_CHANGE_DISTANCE){
                 lastKnownLocation = location;
             }
@@ -139,8 +180,6 @@ public class MapViewFragment extends Fragment {
 
         public void onProviderDisabled(String provider) {}
     };
-
-
 
 
 
@@ -161,7 +200,7 @@ public class MapViewFragment extends Fragment {
         LatLng latLng = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
 
         if (MAP_MODE == C.MAP_MODE_BIRDVIEW) {
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(false);
             googleMap.getUiSettings().setAllGesturesEnabled(true);
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(latLng)
@@ -207,14 +246,12 @@ public class MapViewFragment extends Fragment {
 
         myLocationMarker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
-//                .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_me))
                 .visible(false)
                 .flat(false));
 
         myDrivingMarker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
-                        //              .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_driving_me))
                 .visible(false)
                 .flat(true));
@@ -279,7 +316,6 @@ public class MapViewFragment extends Fragment {
 
         return rootView;
     }
-
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -318,11 +354,13 @@ public class MapViewFragment extends Fragment {
 //            return true;
 //        }
 
-        if (item.getItemId() == R.id.action_setNewRouteManually){
-            Intent myIntent = new Intent(getActivity(), NavigationRoutePicker.class);
-            startActivityForResult(myIntent, C.REQUEST_CODE_NEW_ROUTE);
+        if (item.getItemId() == R.id.action_navigatorSetNewRouteManually){
+            Intent myIntent = new Intent(getActivity(), NewNavigationRoute.class);
+            startActivityForResult(myIntent, C.REQUEST_CODE_NAVIGATOR_NEW_ROUTE);
             return true;
         }
+
+        if (item.getItemId() == R.id.action_navigatorClearRoute) ClearCurrentRoute();
 
         return super.onOptionsItemSelected(item);
     }
@@ -333,31 +371,29 @@ public class MapViewFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void userActionMarkPolice(View v){
-        globalAnnounceInterface.announcePolice();
-    }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == C.REQUEST_CODE_NEW_ROUTE) {
+        if (requestCode == C.REQUEST_CODE_NAVIGATOR_NEW_ROUTE) {
 
             if (resultCode == Activity.RESULT_OK) {
 
-                gd = new GoogleDirectionsApi(getActivity());
+                GoogleDirectionsApi gd = new GoogleDirectionsApi(getActivity());
 
-                Document doc = G.getInstance().currentRoute;
-                LatLng start = data.getParcelableExtra("startLatLng");
-                LatLng end = data.getParcelableExtra("endLatLng");
-                googleMap.addPolyline(gd.getPolyline(doc, 3, Color.RED));
+                LatLng start = data.getParcelableExtra("pointA");
+                LatLng end = data.getParcelableExtra("pointB");
 
-                googleMap.addMarker(new MarkerOptions().position(start)
+                currentRoute = G.getInstance().currentNavigationRoute;
+                currentRoutePolyline = googleMap.addPolyline(gd.getPolyline(currentRoute, C.MAP_ROUTE_WIDTH_DP, C.MAP_ROUTE_COLOR));
+
+                pointAMarker = googleMap.addMarker(new MarkerOptions().position(start)
                         .icon(BitmapDescriptorFactory.defaultMarker(
                                 BitmapDescriptorFactory.HUE_GREEN)));
 
-                googleMap.addMarker(new MarkerOptions().position(end)
+                pointBMarker = googleMap.addMarker(new MarkerOptions().position(end)
                         .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN)));
+                                BitmapDescriptorFactory.HUE_RED)));
             }
         }
     }

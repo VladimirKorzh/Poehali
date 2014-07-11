@@ -7,29 +7,50 @@
     android:background="@drawable/style_order_list_item">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Челябинская 5б"
-        android:id="@+id/txtOrigin"
+        android:id="@+id/txtOrderOrigin"
         android:layout_gravity="center_vertical"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:layout_toLeftOf="@+id/txtOrderFare"
+        android:layout_marginRight="40dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Героев Днепра 19"
-        android:id="@+id/txtDestination"
-        android:layout_below="@+id/txtOrigin" />
+        android:id="@+id/txtOrderDestination"
+        android:layout_below="@+id/txtOrderOrigin"
+        android:layout_toLeftOf="@+id/txtOrderDistance"
+        android:layout_marginRight="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="46 грн"
-        android:id="@+id/textView"
+        android:id="@+id/txtOrderFare"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="30km"
+        android:id="@+id/txtOrderDistance"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_below="@+id/txtOrderFare" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="30min"
+        android:id="@+id/txtDuration"
+        android:layout_below="@+id/txtOrderDistance"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.activities.PhoneNumberValidation;
+import com.korzh.poehali.dialogs.PhoneNumberValidation;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.common.util.U;
@@ -97,6 +97,7 @@ public class ProfileFragment extends Fragment {
                     startActivityForResult(i, C.REQUEST_CODE_VALIDATE_PHONE);
                 }
                 saveInfo();
+                Toast.makeText(getActivity(),"Изменения сохранены", Toast.LENGTH_LONG).show();
                 break;
         }
     }

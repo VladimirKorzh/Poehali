@@ -8,6 +8,8 @@ import com.korzh.poehali.common.util.U;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 /**
  * Created by futurewife on 08.07.14.
  */
@@ -23,7 +25,8 @@ public class GlobalMapAnnouncePacket extends NetworkObjectBase {
         try {
             jsonObject.put("loc",locationJson.getJsonObject());
             jsonObject.put("t",type);
-            jsonObject.put("time","0");
+            jsonObject.put("time", String.valueOf(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime())));
+            this.timestamp = String.valueOf(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()));
         } catch (JSONException e) {
             U.Log(getClass().getSimpleName(), "Error writing json object");
         }

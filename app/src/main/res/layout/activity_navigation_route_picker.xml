@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.korzh.poehali.dialogs.NewNavigationRoute">
+
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:src="@drawable/background"
+        style="@style/myActivityBackgroundImage" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listPossibleRoutes" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frmMap"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:visibility="visible"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/listPossibleRoutes">
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_gravity="center_horizontal|bottom" />
+    </FrameLayout>
+
+</RelativeLayout>

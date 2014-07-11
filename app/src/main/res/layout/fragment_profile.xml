@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
@@ -12,10 +13,45 @@
         android:src="@drawable/background" />
 
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relBalanceBtn"
+        android:layout_below="@+id/relStats"
+        style="@style/mySubPanel"
+        android:layout_alignRight="@+id/relStats">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пополнить"
+            android:id="@+id/btnFillBalance"
+            android:onClick="onButtonClick"
+            style="@style/MySmallButton"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relContactInfoBtn"
+        style="@style/mySubPanel"
+        android:layout_below="@+id/relUserInfo"
+        android:layout_alignRight="@+id/relUserInfo">
+
+        <Button
+            android:text="Сохранить"
+            android:id="@+id/btnSaveInfo"
+            android:layout_alignParentRight="true"
+            android:onClick="onButtonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MySmallButton" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/relUserInfo"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
         style="@style/MyBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -106,21 +142,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_below="@+id/relUserInfo"
-        android:id="@+id/relContactInfoBtn"
-        style="@style/mySubBoxButtonArea">
-
-        <Button
-            android:text="Сохранить"
-            android:id="@+id/btnSaveInfo"
-            android:layout_alignParentRight="true"
-            android:onClick="onButtonClick"
-            style="@style/MySmallButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relStats"
@@ -159,23 +180,6 @@
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/relBalanceBtn"
-        android:layout_below="@+id/relStats"
-        style="@style/mySubBoxButtonArea">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Пополнить"
-            android:id="@+id/btnFillBalance"
-            android:onClick="onButtonClick"
-            style="@style/MySmallButton"
-            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 </RelativeLayout>

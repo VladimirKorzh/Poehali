@@ -5,25 +5,20 @@
     tools:context=".fragments.OrdersFragment">
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop" />
-
-    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radar"
         android:layout_centerInParent="true"
-        android:src="@drawable/radar_circle" />
+        android:src="@drawable/radar_circle"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radarArrow"
         android:src="@drawable/radar_arrow"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/listOrders"
@@ -36,7 +31,20 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:listSelector="@android:color/transparent"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:layout_above="@+id/button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сделать заказ"
+        android:id="@+id/btnSendTestOrder"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/listOrders"
+        android:layout_alignStart="@+id/listOrders"
+        android:layout_alignRight="@+id/listOrders"
+        android:layout_alignEnd="@+id/listOrders"
+        android:onClick="onButtonClick" />
 
 
 </RelativeLayout>

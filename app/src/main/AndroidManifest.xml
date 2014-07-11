@@ -16,7 +16,7 @@
     <!-- Floating notifications -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!--Automatic phone number confirmation can read the last call-->
+    <!-- Automatic phone number confirmation can read the last call -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <uses-feature
@@ -28,54 +28,57 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-
         <activity
             android:name=".activities.MainMenu"
             android:label="@string/title_activity_mainmenu"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.MapView"
             android:label="@string/title_activity_map_view"
             android:parentActivityName=".activities.MainMenu"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".activities.MainMenu"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
-            android:name=".activities.PhoneNumberValidation"
+            android:name=".dialogs.PhoneNumberValidation"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activities.Profile"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
-            android:name=".activities.NavigationRoutePicker"
+            android:name=".dialogs.NewOrder"
             android:label="@string/title_activity_route_picker"
             android:parentActivityName=".activities.MapView"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
-            android:name=".activities.PlacePicker"
+            android:name=".dialogs.PointPicker"
             android:label="@string/title_activity_place_picker"
-            android:parentActivityName=".activities.NavigationRoutePicker"
-            android:theme="@style/AppTheme">
+            android:parentActivityName=".dialogs.NewOrder"
+            android:theme="@style/AppTheme" >
         </activity>
-
         <activity
             android:name=".activities.OrdersView"
             android:label="@string/title_activity_orders_view"
             android:parentActivityName=".activities.MainMenu"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".dialogs.UserSettings"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.MainMenu"
+            android:theme="@style/AppTheme" >
         </activity>
 
         <meta-data
@@ -86,8 +89,13 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name=".common.interfaces.ServiceFloating"
+            android:name=".activities.ServiceFloating"
             android:exported="true" />
+
+        <activity
+            android:name=".dialogs.NewNavigationRoute"
+            android:label="@string/title_activity_navigation_route_picker" >
+        </activity>
     </application>
 
 </manifest>

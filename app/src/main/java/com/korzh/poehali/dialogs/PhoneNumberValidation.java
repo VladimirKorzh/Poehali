@@ -1,10 +1,10 @@
-package com.korzh.poehali.activities;
+package com.korzh.poehali.dialogs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.korzh.poehali.R;
+import com.korzh.poehali.activities.ActivityBase;
 import com.korzh.poehali.common.interfaces.MOTPPhoneConfirmAPI;
 
 public class PhoneNumberValidation extends ActivityBase {
@@ -35,13 +35,5 @@ public class PhoneNumberValidation extends ActivityBase {
         Intent returnIntent = new Intent();
         setResult(res,returnIntent);
         finish();
-    }
-
-    public void onButtonClick(View v){
-        switch (v.getId()){
-            case R.id.btnCancelVerification:
-                finishWithResult(RESULT_CANCELED);
-                break;
-        }
     }
 }

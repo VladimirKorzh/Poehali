@@ -1,4 +1,4 @@
-package com.korzh.poehali.common.interfaces;
+package com.korzh.poehali.activities;
 
 /**
  * Created by vladimir on 7/8/2014.
@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 
 import com.korzh.poehali.common.R;
+import com.korzh.poehali.common.util.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +31,10 @@ import java.util.List;
 
 public class ServiceFloating extends Service {
 
-    public static int ID_NOTIFICATION = 2018;
+    public static int ID_NOTIFICATION = C.FLOATING_NOTIFICATION_ID;
 
     private WindowManager windowManager;
-    private ImageView chatHead;
+    private ImageView floatingIcon;
 
     boolean mHasDoubleClicked = false;
     long lastPressTime;
@@ -52,9 +53,9 @@ public class ServiceFloating extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        chatHead = new ImageView(this);
+        floatingIcon = new ImageView(this);
 
-        chatHead.setImageResource(R.drawable.ic_floating);
+        floatingIcon.setImageResource(R.drawable.ic_floating);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -65,33 +66,32 @@ public class ServiceFloating extends Service {
 
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = 0;
-        params.y = 100;
+        params.y = 200;
 
-        windowManager.addView(chatHead, params);
+        windowManager.addView(floatingIcon, params);
 
         try {
-            chatHead.setOnTouchListener(new View.OnTouchListener() {
+            floatingIcon.setOnTouchListener(new View.OnTouchListener() {
                 private WindowManager.LayoutParams paramsF = params;
                 private int initialX;
                 private int initialY;
                 private float initialTouchX;
                 private float initialTouchY;
 
-                @Override public boolean onTouch(View v, MotionEvent event) {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
 
                             // Get current time in nano seconds.
                             long pressTime = System.currentTimeMillis();
 
-
                             // If double click...
                             if (pressTime - lastPressTime <= 300) {
                                 createNotification();
                                 ServiceFloating.this.stopSelf();
                                 mHasDoubleClicked = true;
-                            }
-                            else {     // If not double click....
+                            } else {     // If not double click....
                                 mHasDoubleClicked = false;
                             }
                             lastPressTime = pressTime;
@@ -105,7 +105,7 @@ public class ServiceFloating extends Service {
                         case MotionEvent.ACTION_MOVE:
                             paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
                             paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
-                            windowManager.updateViewLayout(chatHead, paramsF);
+                            windowManager.updateViewLayout(floatingIcon, paramsF);
                             break;
                     }
                     return false;
@@ -114,15 +114,6 @@ public class ServiceFloating extends Service {
         } catch (Exception e) {
             // TODO: handle exception
         }
-
-        chatHead.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                initiatePopupWindow(chatHead);
-            }
-        });
-
     }
 
 
@@ -148,22 +139,21 @@ public class ServiceFloating extends Service {
     }
 
     public void createNotification(){
-        Intent notificationIntent = new Intent(getApplicationContext(), ServiceFloating.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), MainMenu.class);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 0, notificationIntent, 0);
 
-        Notification notification = new Notification(R.drawable.ic_launcher, "Click to start launcher",System.currentTimeMillis());
-        notification.setLatestEventInfo(getApplicationContext(), "Start launcher" ,  "Click to start launcher", pendingIntent);
+        Notification notification = new Notification(R.drawable.ic_launcher, "Click to start",System.currentTimeMillis());
+        notification.setLatestEventInfo(getApplicationContext(), "Start launcher" ,  "Click to start", pendingIntent);
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
 
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(ID_NOTIFICATION,notification);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (chatHead != null) windowManager.removeView(chatHead);
+        if (floatingIcon != null) windowManager.removeView(floatingIcon);
     }
 
 }

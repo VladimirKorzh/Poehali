@@ -1,11 +1,12 @@
 package com.korzh.poehali.common.interfaces;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.korzh.poehali.common.R;
+import com.korzh.poehali.common.util.AsyncTaskWithProgress;
 import com.korzh.poehali.common.util.U;
 
 import org.apache.http.HttpResponse;
@@ -22,6 +23,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,23 +48,30 @@ public class GoogleDirectionsApi {
         mDirectionListener = listener;
     }
 
-
-
-
-
     public String request(LatLng start, LatLng end, String mode) {
         final String url = "http://maps.googleapis.com/maps/api/directions/xml?"
                 + "origin=" + start.latitude + "," + start.longitude
                 + "&destination=" + end.latitude + "," + end.longitude
-                + "&sensor=false&units=metric&mode=" + mode;
+                + "&sensor=false&units=metric&mode=" + mode+"&language=ru&alternatives=true";
 
 
         U.Log("GoogleDirection", "URL : " + url);
-        new RequestTask().execute(url);
+        new RequestTask(mContext).execute(url);
         return url;
     }
 
-    private class RequestTask extends AsyncTask<String, Void, Document> {
+    private class RequestTask extends AsyncTaskWithProgress<String, Void, Document> {
+
+        public RequestTask(Context activity) {
+            super(mContext);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            dialog.setMessage(mContext.getString(R.string.dialog_title_calculating_route));
+            dialog.show();
+        }
+
         protected Document doInBackground(String... url) {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
@@ -86,6 +95,7 @@ public class GoogleDirectionsApi {
             super.onPostExecute(doc);
             if(mDirectionListener != null)
                 mDirectionListener.onResponse(getStatus(doc), doc, GoogleDirectionsApi.this);
+
         }
 
         private String getStatus(Document doc) {
@@ -97,8 +107,21 @@ public class GoogleDirectionsApi {
     }
 
 
-    public PolylineOptions getPolyline(Document doc, int width, int color) {
-        ArrayList<LatLng> arr_pos = getDirection(doc);
+
+
+    public HashMap<String, NodeList> getRoutes(Document doc){
+        HashMap<String, NodeList> result = new HashMap<String, NodeList>();
+        NodeList nodes = doc.getElementsByTagName("route");
+        for (int i = 0; i<nodes.getLength(); ++i){
+            NodeList childNodes = nodes.item(i).getChildNodes();
+            Node summary = childNodes.item(getNodeIndex(childNodes,"summary"));
+            result.put(summary.getTextContent(), childNodes);
+        }
+        return result;
+    }
+
+    public PolylineOptions getPolyline(NodeList route, int width, int color) {
+        ArrayList<LatLng> arr_pos = getDirection(route);
         PolylineOptions rectLine = new PolylineOptions().width(dpToPx(width)).color(color);
         for (LatLng arr_po : arr_pos) rectLine.add(arr_po);
         return rectLine;
@@ -109,39 +132,52 @@ public class GoogleDirectionsApi {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public ArrayList<LatLng> getDirection(Document doc) {
-        NodeList nl1, nl2, nl3;
+    public ArrayList<LatLng> getDirection(NodeList route) {
+        NodeList steps, singleStepNodes, internalNodes;
+        Node latNode,lngNode, locationNode, polylineNode, pointsNode;
+
         ArrayList<LatLng> listGeopoints = new ArrayList<LatLng>();
-        nl1 = doc.getElementsByTagName("step");
-        if (nl1.getLength() > 0) {
-            for (int i = 0; i < nl1.getLength(); i++) {
-                Node node1 = nl1.item(i);
-                nl2 = node1.getChildNodes();
 
-                Node locationNode = nl2.item(getNodeIndex(nl2, "start_location"));
-                nl3 = locationNode.getChildNodes();
-                Node latNode = nl3.item(getNodeIndex(nl3, "lat"));
-                double lat = Double.parseDouble(latNode.getTextContent());
-                Node lngNode = nl3.item(getNodeIndex(nl3, "lng"));
-                double lng = Double.parseDouble(lngNode.getTextContent());
-                listGeopoints.add(new LatLng(lat, lng));
+        steps = route.item(getNodeIndex(route,"leg")).getChildNodes();
 
-                locationNode = nl2.item(getNodeIndex(nl2, "polyline"));
-                nl3 = locationNode.getChildNodes();
-                latNode = nl3.item(getNodeIndex(nl3, "points"));
-                ArrayList<LatLng> arr = decodePoly(latNode.getTextContent());
-                for (LatLng anArr : arr) {
-                    listGeopoints.add(new LatLng(anArr.latitude
-                            , anArr.longitude));
+        // we found steps
+        if (steps.getLength() > 0) {
+
+            // iterate over each one
+            for (int i = 0; i < steps.getLength(); i++) {
+
+                // get particular step node
+                Node step = steps.item(i);
+
+                // only process nodes named step
+                if ("step".equalsIgnoreCase(step.getNodeName())) {
+
+                    // find whats inside this step
+                    singleStepNodes = step.getChildNodes();
+
+                    // extract start location
+                    locationNode = singleStepNodes.item(getNodeIndex(singleStepNodes, "start_location"));
+                    internalNodes = locationNode.getChildNodes();
+                    latNode = internalNodes.item(getNodeIndex(internalNodes, "lat"));
+                    lngNode = internalNodes.item(getNodeIndex(internalNodes, "lng"));
+                    listGeopoints.add(new LatLng(Double.parseDouble(latNode.getTextContent()),
+                            Double.parseDouble(lngNode.getTextContent())));
+
+                    // extract polyline between points
+                    polylineNode = singleStepNodes.item(getNodeIndex(singleStepNodes, "polyline"));
+                    internalNodes = polylineNode.getChildNodes();
+                    pointsNode = internalNodes.item(getNodeIndex(internalNodes, "points"));
+                    ArrayList<LatLng> points = decodePoly(pointsNode.getTextContent());
+                    for (LatLng p : points) listGeopoints.add(new LatLng(p.latitude, p.longitude));
+
+                    // extract end location
+                    locationNode = singleStepNodes.item(getNodeIndex(singleStepNodes, "end_location"));
+                    internalNodes = locationNode.getChildNodes();
+                    latNode = internalNodes.item(getNodeIndex(internalNodes, "lat"));
+                    lngNode = internalNodes.item(getNodeIndex(internalNodes, "lng"));
+                    listGeopoints.add(new LatLng(Double.parseDouble(latNode.getTextContent()),
+                            Double.parseDouble(lngNode.getTextContent())));
                 }
-
-                locationNode = nl2.item(getNodeIndex(nl2, "end_location"));
-                nl3 = locationNode.getChildNodes();
-                latNode = nl3.item(getNodeIndex(nl3, "lat"));
-                lat = Double.parseDouble(latNode.getTextContent());
-                lngNode = nl3.item(getNodeIndex(nl3, "lng"));
-                lng = Double.parseDouble(lngNode.getTextContent());
-                listGeopoints.add(new LatLng(lat, lng));
             }
         }
 
@@ -155,7 +191,6 @@ public class GoogleDirectionsApi {
         }
         return -1;
     }
-
 
     private ArrayList<LatLng> decodePoly(String encoded) {
         ArrayList<LatLng> poly = new ArrayList<LatLng>();
@@ -186,43 +221,32 @@ public class GoogleDirectionsApi {
         return poly;
     }
 
-
-
-
-
-
-
-
-    public String getTotalDurationText(Document doc) {
-        NodeList nl1 = doc.getElementsByTagName("duration");
-        Node node1 = nl1.item(nl1.getLength() - 1);
-        NodeList nl2 = node1.getChildNodes();
-        Node node2 = nl2.item(getNodeIndex(nl2, "text"));
-        U.Log("GoogleDirection", "TotalDuration : " + node2.getTextContent());
-        return node2.getTextContent();
+    public String getTotalDurationText(NodeList route) {
+        NodeList steps = route.item(getNodeIndex(route,"leg")).getChildNodes();
+        Node duration = steps.item(getNodeIndex(steps,"duration"));
+        NodeList durationChildNodes = duration.getChildNodes();
+        Node text = durationChildNodes.item(getNodeIndex(durationChildNodes, "text"));
+        return text.getTextContent();
     }
 
-    public String getTotalDistanceText(Document doc) {
-        NodeList nl1 = doc.getElementsByTagName("distance");
-        Node node1 = nl1.item(nl1.getLength() - 1);
-        NodeList nl2 = node1.getChildNodes();
-        Node node2 = nl2.item(getNodeIndex(nl2, "text"));
-        U.Log("GoogleDirection", "TotalDuration : " + node2.getTextContent());
-        return node2.getTextContent();
+    public String getTotalDistanceText(NodeList route) {
+        NodeList steps = route.item(getNodeIndex(route,"leg")).getChildNodes();
+        Node duration = steps.item(getNodeIndex(steps,"distance"));
+        NodeList durationChildNodes = duration.getChildNodes();
+        Node text = durationChildNodes.item(getNodeIndex(durationChildNodes, "text"));
+        return text.getTextContent();
     }
 
-    public String getStartAddress(Document doc) {
-        NodeList nl1 = doc.getElementsByTagName("start_address");
-        Node node1 = nl1.item(0);
-        U.Log("GoogleDirection", "StartAddress : " + node1.getTextContent());
-        return node1.getTextContent();
+    public String getStartAddress(NodeList route) {
+        NodeList steps = route.item(getNodeIndex(route,"leg")).getChildNodes();
+        Node start_address = steps.item(getNodeIndex(steps,"start_address"));
+        return start_address.getTextContent();
     }
 
-    public String getEndAddress(Document doc) {
-        NodeList nl1 = doc.getElementsByTagName("end_address");
-        Node node1 = nl1.item(0);
-        U.Log("GoogleDirection", "StartAddress : " + node1.getTextContent());
-        return node1.getTextContent();
+    public String getEndAddress(NodeList route) {
+        NodeList steps = route.item(getNodeIndex(route,"leg")).getChildNodes();
+        Node end_address = steps.item(getNodeIndex(steps,"end_address"));
+        return end_address.getTextContent();
     }
 
 }

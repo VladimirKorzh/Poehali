@@ -4,6 +4,8 @@ import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.U;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.ShutdownListener;
+import com.rabbitmq.client.ShutdownSignalException;
 
 import java.io.IOException;
 
@@ -12,8 +14,9 @@ import java.io.IOException;
  */
 public class RabbitMQHelper {
 
-    public Connection connection = null;
+    private final String TAG = "RabbitMQHelper";
 
+    public Connection connection = null;
     private static RabbitMQHelper instance = null;
 
     public RabbitMQHelper(){
@@ -29,7 +32,6 @@ public class RabbitMQHelper {
     }
 
     public void connect(){
-        U.Log(getClass().getSimpleName(), "Creating connection to Rabbit MQ Server");
         try {
             disconnect();
             ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -37,10 +39,18 @@ public class RabbitMQHelper {
 
             // sends keep alive packets every so often
             connectionFactory.setRequestedHeartbeat(C.MQ_CONNECTION_HEARTBEAT);
-            connectionFactory.setAutomaticRecoveryEnabled(true);
 
             connection = connectionFactory.newConnection();
-
+            connection.addShutdownListener(new ShutdownListener() {
+                @Override
+                public void shutdownCompleted(ShutdownSignalException cause) {
+                    if (!cause.isInitiatedByApplication()) {
+                        U.Log("RabbitMQHelper", "Connection to MQ lost. Reason: "+ cause.getReason());
+                        connection = null;
+                    }
+                }
+            });
+            U.Log(TAG, "Connected to MQ.");
         } catch (Exception e) {
             U.Log(getClass().getSimpleName(),"Error connecting to MQ: " + e.getMessage());
         }
@@ -48,7 +58,6 @@ public class RabbitMQHelper {
 
     public void disconnect(){
         if (connection != null){
-            U.Log(getClass().getSimpleName(), "Disconnecting from Rabbit MQ server");
             try {
                 connection.close();
             } catch (IOException e) {

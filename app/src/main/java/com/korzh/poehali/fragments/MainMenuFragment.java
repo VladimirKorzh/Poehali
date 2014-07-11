@@ -11,6 +11,7 @@ import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
 import com.korzh.poehali.activities.OrdersView;
 import com.korzh.poehali.activities.Profile;
+import com.korzh.poehali.dialogs.UserSettings;
 
 /**
  * Created by vladimir on 7/7/2014.
@@ -50,7 +51,8 @@ public class MainMenuFragment extends Fragment{
         rootView.findViewById(R.id.relMainMenuSettings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(getActivity(), UserSettings.class);
+                startActivity(i);
             }
         });
 

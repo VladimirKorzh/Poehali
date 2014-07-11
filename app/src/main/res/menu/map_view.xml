@@ -8,8 +8,13 @@
         app:showAsAction="always|withText" />
 
 
-    <item android:id="@+id/action_setNewRouteManually"
+    <item android:id="@+id/action_navigatorSetNewRouteManually"
         android:title="@string/btnSetNewRouteManually"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_navigatorClearRoute"
+        android:title="@string/btnClearRoute"
         android:icon="@android:drawable/ic_popup_sync"
         app:showAsAction="never" />
 

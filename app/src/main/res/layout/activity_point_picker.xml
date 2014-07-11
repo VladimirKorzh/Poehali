@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.korzh.poehali.activities.PlacePicker">
+    tools:context="com.korzh.poehali.dialogs.PointPicker">
+
 
     <ImageView
         android:layout_width="fill_parent"
@@ -12,6 +13,7 @@
         android:id="@+id/imageView"
         android:src="@drawable/background"
         android:scaleType="centerCrop" />
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -56,7 +58,7 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:id="@+id/frmMap"
         android:focusable="false"
@@ -65,7 +67,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/relAddressLine"
-        style="@style/MyBox"
         android:layout_marginTop="10dp">
 
         <fragment

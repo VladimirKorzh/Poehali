@@ -1,4 +1,4 @@
-package com.korzh.poehali.activities;
+package com.korzh.poehali.dialogs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +9,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.korzh.poehali.R;
-import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
+import com.korzh.poehali.activities.ActivityBase;
 import com.korzh.poehali.common.util.C;
-import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.common.util.U;
-
-import org.w3c.dom.Document;
 
 /**
  * Created by vladimir on 7/5/2014.
  */
-public class NavigationRoutePicker extends ActivityBase {
+public class NewOrder extends ActivityBase {
 
     private View clicked = null;
     private TextView startPoint = null;
@@ -33,39 +30,23 @@ public class NavigationRoutePicker extends ActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_picker);
+        setContentView(R.layout.activity_new_order);
 
         startPoint = (TextView) findViewById(R.id.txtStartPoint);
         endPoint = (TextView) findViewById(R.id.txtEndPoint);
-        distance = (TextView) findViewById(R.id.txtDistance);
-        time = (TextView) findViewById(R.id.txtTime);
+
     }
 
     public void pickPlace(View v) {
         clicked = v;
-        Intent i = new Intent(this, PlacePicker.class);
+        Intent i = new Intent(this, PointPicker.class);
         startActivityForResult(i, C.REQUEST_CODE_ADDRESS_INPUT);
-    }
-
-    public void onButtonClick(View v) {
-        if (v.getId() == R.id.btnCalculateTrip){
-            GoogleDirectionsApi gd = new GoogleDirectionsApi(this);
-
-            gd.setOnDirectionResponseListener(new GoogleDirectionsApi.OnDirectionResponseListener() {
-                public void onResponse(String status, Document doc, GoogleDirectionsApi gd) {
-                    distance.setText(gd.getTotalDistanceText(doc));
-                    time.setText(gd.getTotalDurationText(doc));
-                    G.getInstance().currentRoute = doc;
-                }
-            });
-            gd.request(pointA,pointB,"driving");
-        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.route_picker, menu);
+        getMenuInflater().inflate(R.menu.dialog, menu);
         return true;
     }
 
@@ -74,7 +55,7 @@ public class NavigationRoutePicker extends ActivityBase {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if (item.getItemId() == R.id.action_select_route) {
+        if (item.getItemId() == R.id.action_continue) {
             if (pointA != null && pointB != null){
                 Intent returnIntent = new Intent();
                 Bundle b = new Bundle();

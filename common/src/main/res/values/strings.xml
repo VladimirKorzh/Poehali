@@ -5,30 +5,33 @@
 
     <!--Main menu activity strings    -->
     <string name="title_activity_mainmenu">Поехали</string>
-
     <string name="desctiption_logo">Логотип Поехали</string>
     <string name="description_background">Фон приложения</string>
-
     <string name="description_icon_settings">Иконка настроек</string>
     <string name="description_icon_orders">Иконка заказы</string>
     <string name="description_icon_map">Иконка Карта</string>
     <string name="description_icon_profile">Иконка профиль</string>
-
     <string name="lbl_main_menu_btn_orders">Заказы</string>
     <string name="lbl_main_menu_btn_map">Карта</string>
     <string name="lbl_main_menu_btn_settings">Настройки</string>
     <string name="lbl_main_menu_btn_profile">Профиль</string>
 
+
+
     <!--Orders view activity strings-->
     <string name="title_activity_orders_view">Заказы</string>
+
+
 
     <!--Map view activity strings-->
     <string name="title_activity_map_view">Поехали</string>
     <string name="switch_map_view">Переключить вид</string>
-
     <string name="msgGpsIsDisabled">GPS выключен. Для полноценной работы приложения необходимо его включить.</string>
     <string name="dlgBtnEnableGps">Настройки</string>
     <string name="dlgBtnCancel">Отмена</string>
+    <string name="toast_gps_is_enabled">GPS приемник включен</string>
+
+
 
     <!--Profile strings-->
     <string name="title_activity_profile">Профиль</string>
@@ -36,6 +39,8 @@
     <string-array name="mobile_codes">
         <item>+38</item>
     </string-array>
+
+
 
     <!--Phone verification strings-->
     <string name="title_activity_login">Подтверждение личности</string>
@@ -49,6 +54,10 @@
         Для подтверждения введенного номера телефона, в течении нескольких секунд Вам позвонят.
         Не волнуйтесь, брать трубку не нужно. Программа сама все сделает.
     </string>
+    <string name="toast_number_confirmation_error">Ошибка подтверждения номера. Проверьте ввод</string>
+    <string name="toast_number_confirmed">Номер успешно подтвержден</string>
+
+
 
     <!--Settings new route strings-->
     <string name="title_activity_route_picker">Маршрут</string>
@@ -56,13 +65,16 @@
     <string name="btnSetNewRouteManually">Задать маршрут</string>
     <string name="action_select_location">Продолжить</string>
     <string name="msg_geocode_working">Получаем информацию о местоположении</string>
+    <string name="toast_cannot_calculate_route_no_points">Невозможно расчитать маршрут. Точки не заданы.</string>
+
+
+
 
     <string name="dialog_msg_progress_busy">Пожалуйста подождите</string>
-    <string name="toast_gps_is_enabled">GPS is Enabled in your device</string>
-    <string name="btn_action_back_cancel_verification">Назад</string>
-    <string name="toast_number_confirmation_error">Ошибка подтверждения номера. Проверьте ввод</string>
-    <string name="toast_number_confirmed">Номер успешно подтвержден</string>
-    <string name="share">Поделиться</string>
+    <string name="title_activity_settings">settings activity</string>
+    <string name="dialog_title_calculating_route">Расчитываем маршрут</string>
+    <string name="title_activity_navigation_route_picker">Выбор маршрута</string>
+    <string name="btnClearRoute">Очистить маршрут</string>
 
 
 </resources>

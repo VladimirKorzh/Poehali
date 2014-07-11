@@ -1,12 +1,10 @@
 package com.korzh.poehali.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.common.interfaces.ServiceFloating;
 import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.fragments.MainMenuFragment;
 
@@ -20,7 +18,7 @@ public class MainMenu extends ActivityBase {
         super.onCreate(savedInstanceState);
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_mainmenu);
+        setContentView(R.layout.activity_base);
         new G(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -28,6 +26,6 @@ public class MainMenu extends ActivityBase {
                 .replace(R.id.container, new MainMenuFragment())
                 .commit();
 
-        startService(new Intent(this, ServiceFloating.class));
+        //startService(new Intent(this, ServiceFloating.class));
     }
 }

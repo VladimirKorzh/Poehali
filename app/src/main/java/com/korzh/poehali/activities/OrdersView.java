@@ -16,7 +16,7 @@ public class OrdersView extends ActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_base);
 
         ordersFragment = new OrdersFragment();
 

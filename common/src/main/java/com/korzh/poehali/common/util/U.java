@@ -36,7 +36,4 @@ public class U {
         double foundLatitude = y + y0;
         return new LocationJson(foundLatitude, foundLongitude);
     }
-
-
-
 }

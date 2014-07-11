@@ -62,7 +62,7 @@ public class LocationBroadcaster {
         U.Log(TAG, "Starting");
 
         updateHandler = new Handler();
-        updateHandler.postDelayed(uploadLocation, C.LOCATION_BROADCASTER_UPDATES_MILLIS);
+        updateHandler.post(uploadLocation);
     }
 
     public void StopBroadcast(){

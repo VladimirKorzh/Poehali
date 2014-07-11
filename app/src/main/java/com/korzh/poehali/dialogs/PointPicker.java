@@ -1,4 +1,4 @@
-package com.korzh.poehali.activities;
+package com.korzh.poehali.dialogs;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,11 +23,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.korzh.poehali.R;
+import com.korzh.poehali.activities.ActivityBase;
 import com.korzh.poehali.common.interfaces.GoogleGeocodeApi;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 
-public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickListener {
+public class PointPicker extends ActivityBase implements GoogleMap.OnMapClickListener {
 
     private GoogleMap googleMap = null;
     private Marker selected_position_marker = null;
@@ -39,7 +40,7 @@ public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_place_picker);
+        setContentView(R.layout.activity_point_picker);
 //        /getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         googleGeocodeApi = new GoogleGeocodeApi(this);
@@ -74,7 +75,6 @@ public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickLis
 
         selected_position_marker = googleMap.addMarker(new MarkerOptions()
                 .position(C.LOCATION_KIEV)
-                .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_me))
                 .visible(false));
 
@@ -119,8 +119,6 @@ public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickLis
         googleGeocodeApi.getLocationFromString(txtAddress.getText().toString()+C.CURRENT_LOCATION);
     }
 
-
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -130,7 +128,7 @@ public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.place_picker, menu);
+        getMenuInflater().inflate(R.menu.dialog, menu);
         return true;
     }
 
@@ -142,7 +140,7 @@ public class PlacePicker extends ActivityBase implements GoogleMap.OnMapClickLis
         int id = item.getItemId();
         Intent returnIntent = new Intent();
         Bundle b = new Bundle();
-        if (id == R.id.action_select_location) {
+        if (id == R.id.action_continue) {
             b.putString("address", txtAddress.getText().toString());
             b.putParcelable("latlng", selected_position_marker.getPosition());
             returnIntent.putExtras(b);

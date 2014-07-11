@@ -9,11 +9,13 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
+import android.text.format.Time;
 import android.widget.Toast;
 
 import com.korzh.poehali.common.R;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 /**
  * Created by vladimir on 7/1/2014.
@@ -23,13 +25,13 @@ public class G {
     public static LocationManager locationManager = null;
     public SharedPreferences settings = null;
 
-    public Document currentRoute = null;
+    public Document lastPickedRoute = null;
 
     public String userId;
 
     public TextToSpeech textToSpeech;
 
-
+    public NodeList currentNavigationRoute = null;
 
     public static G getInstance(){
         return instance;
@@ -51,6 +53,13 @@ public class G {
 //                        }
 //                    }
 //                });
+    }
+
+    public float getStartingFare(String distance){
+        String[] strings = distance.split(" ");
+        strings[0] = strings[0].replace(",",".");
+        float result = Float.valueOf(strings[0])*2;
+        return result;
     }
 
     public void checkGPSEnabled(final Context context){
@@ -79,14 +88,38 @@ public class G {
     }
 
     public Location getLastKnownLocation(){
-        Location myLocation;
+        Location lastGPSfix, lastNetworkFix;
 
-        // get the latest known location
-        myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (myLocation == null){
-            myLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        // get the latest known locations
+        lastGPSfix = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        lastNetworkFix = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        // if we don't have any GPS data, just return whatever we have
+        if (lastGPSfix == null) {
+            U.Log("getLastKnownLocation","Using network data");
+            return lastNetworkFix;
         }
-        return myLocation;
+
+        // get their respective times
+        Time accepted = new Time();
+        accepted.set(System.currentTimeMillis() - C.LASTLOCATION_TIMEDIFFERENCE);
+
+        Time GPSFixTime = new Time();
+        GPSFixTime.set(lastGPSfix.getTime());
+
+        Time NetworkFixTime = new Time();
+        NetworkFixTime.set(lastNetworkFix.getTime());
+
+        // return whichever is the latest
+        if (NetworkFixTime.after(GPSFixTime)) {
+            U.Log("getLastKnownLocation","Using network data");
+            return lastNetworkFix;
+        }
+        else {
+            U.Log("getLastKnownLocation","Using gps data");
+            return lastGPSfix;
+        }
+
     }
 
 

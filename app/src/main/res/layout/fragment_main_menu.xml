@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView"
-        android:background="@drawable/background"
-        android:scaleType="centerInside"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:visibility="visible"
-        android:contentDescription="@string/description_background" />
 
     <RelativeLayout
         android:orientation="vertical"
@@ -45,7 +32,7 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:id="@+id/relMainMenuMap"
-                    android:background="@drawable/style_button_main_menu">
+                    android:background="@drawable/btn_mainmenu_left">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -66,7 +53,8 @@
                             android:text="@string/lbl_main_menu_btn_map"
                             android:id="@+id/textView"
                             android:layout_centerHorizontal="true"
-                            android:layout_below="@+id/imageView3" />
+                            android:layout_below="@+id/imageView3"
+                            android:textColor="#ffffff" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -74,9 +62,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/style_button_main_menu"
                     android:clickable="false"
-                    android:id="@+id/relMainMenuOrders" >
+                    android:id="@+id/relMainMenuOrders"
+                    android:background="@drawable/style_btn_mainmenu_right">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -98,7 +86,8 @@
                             android:id="@+id/textView2"
                             android:layout_below="@+id/imageView4"
                             android:gravity="center_horizontal"
-                            android:layout_centerHorizontal="true" />
+                            android:layout_centerHorizontal="true"
+                            android:textColor="#ffffff" />
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -128,8 +117,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/style_button_main_menu"
-                    android:id="@+id/relMainMenuProfile">
+                    android:id="@+id/relMainMenuProfile"
+                    android:background="@drawable/btn_mainmenu_left">
 
 
                     <RelativeLayout
@@ -153,7 +142,8 @@
                             android:id="@+id/textView3"
                             android:layout_below="@+id/imageView5"
                             android:gravity="center_horizontal"
-                            android:layout_centerHorizontal="true" />
+                            android:layout_centerHorizontal="true"
+                            android:textColor="#ffffff" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -162,8 +152,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/style_button_main_menu"
-                    android:id="@+id/relMainMenuSettings">
+                    android:id="@+id/relMainMenuSettings"
+                    android:background="@drawable/style_btn_mainmenu_right">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -186,7 +176,8 @@
                             android:id="@+id/textView4"
                             android:layout_below="@+id/imageView6"
                             android:gravity="center_horizontal"
-                            android:layout_centerHorizontal="true" />
+                            android:layout_centerHorizontal="true"
+                            android:textColor="#ffffff" />
                     </RelativeLayout>
 
                 </RelativeLayout>

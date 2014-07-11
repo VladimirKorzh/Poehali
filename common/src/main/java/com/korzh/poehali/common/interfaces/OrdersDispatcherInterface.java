@@ -1,6 +1,5 @@
 package com.korzh.poehali.common.interfaces;
 
-import android.location.Location;
 import android.os.Handler;
 
 import com.korzh.poehali.common.network.MessageConsumer;
@@ -25,14 +24,27 @@ public class OrdersDispatcherInterface {
     private MessageConsumer repliesListener = null;
 
 
+    public void setOnNewOrderReceive(MessageConsumer.OnReceiveMessageHandler onNewOrderReceive) {
+        this.onNewOrderReceive = onNewOrderReceive;
+    }
+
+    public void setOnNewReplyReceive(MessageConsumer.OnReceiveMessageHandler onNewReplyReceive) {
+        this.onNewReplyReceive = onNewReplyReceive;
+    }
 
     MessageConsumer.OnReceiveMessageHandler onNewReplyReceive = new MessageConsumer.OnReceiveMessageHandler() {
         public void onReceiveMessage(QueueingConsumer.Delivery delivery) {
-            //TODO
+            byte[] message = delivery.getBody();
+            String data = new String(message);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(data);
+            } catch (JSONException e) {
+                U.Log(getClass().getSimpleName(), "Error reading json");
+            }
+            U.Log(getClass().getSimpleName(), "New reply received: "+jsonObject.toString());
         }
     };
-
-
 
     MessageConsumer.OnReceiveMessageHandler onNewOrderReceive = new MessageConsumer.OnReceiveMessageHandler() {
         public void onReceiveMessage(QueueingConsumer.Delivery delivery) {
@@ -46,11 +58,6 @@ public class OrdersDispatcherInterface {
             }
             OrderPacket order = new OrderPacket(jsonObject);
             U.Log(getClass().getSimpleName(), "New order received: "+order.toString());
-
-            Location myLocation = G.getInstance().getLastKnownLocation();
-            if (order.isWithinRange(myLocation)) {
-                // TODO
-            }
         }
     };
 
@@ -58,7 +65,7 @@ public class OrdersDispatcherInterface {
     public void StartRepliesListener(){
         U.Log(getClass().getSimpleName(),"Replies Listener Started");
         repliesListener = new MessageConsumer();
-        repliesListener.setOnReceiveMessageHandler(null);
+        repliesListener.setOnReceiveMessageHandler(onNewReplyReceive);
         repliesListener.Start("", "", G.getInstance().userId+" replies");
     }
     public void StopRepliesListener(){
@@ -70,7 +77,7 @@ public class OrdersDispatcherInterface {
         U.Log(getClass().getSimpleName(),"Order Listener Started");
         ordersListener = new MessageConsumer();
         ordersListener.setOnReceiveMessageHandler(onNewOrderReceive);
-        ordersListener.Start(C.DEFAULT_ORDERS_EXCHANGE, "", G.getInstance()+" orders");
+        ordersListener.Start(C.DEFAULT_ORDERS_EXCHANGE, "", G.getInstance().userId+" orders");
     }
     public void StopOrdersListener(){
         U.Log(getClass().getSimpleName(),"Order Listener Stopped");
@@ -98,4 +105,6 @@ public class OrdersDispatcherInterface {
         };
         postOrder.post(uploadLocation);
     }
+
+
 }
