@@ -215,8 +215,12 @@ public class MQBinding {
 
 
     public ArrayList<String> getConsumerBindingKeysList(Location cityCenter, Location myLocation, int searchRadius){
-
         ArrayList<String> result = new ArrayList<String>();
+
+        if (searchRadius == 0){
+            // turned off
+            return result;
+        }
 
         float distance = myLocation.distanceTo(cityCenter);
         float bearing  = cityCenter.bearingTo(myLocation);

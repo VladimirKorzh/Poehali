@@ -62,7 +62,7 @@ public class MOTPPhoneConfirmAPI {
             String sid = verifyUsersPhone(cellPhoneNumber[0]);
             String callerNumber = decodeCallerNumber(sid);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

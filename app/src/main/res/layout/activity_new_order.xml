@@ -14,74 +14,80 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/MyBox"
-        android:id="@+id/relRouteInfo">
+        android:layout_height="fill_parent"
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/relPointA"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:clickable="true"
-            android:onClick="pickPlace">
+            style="@style/MyBox"
+            android:id="@+id/relRouteInfo">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/txtStartPoint"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/imageView"
-                android:hint="Точка отправления не выбрана"
-                style="@style/Widget.AppCompat.AutoCompleteTextView"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:clickable="false" />
+                android:id="@+id/relPointA"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:clickable="true"
+                android:onClick="pickPlace">
 
-            <ImageView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/txtStartPoint"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageView"
+                    android:hint="Точка отправления не выбрана"
+                    style="@style/Widget.AppCompat.AutoCompleteTextView"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="false" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView"
+                    android:src="@drawable/menu_icon_navigator"
+                    android:layout_alignParentTop="false"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="false"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:src="@drawable/menu_icon_navigator"
-                android:layout_alignParentTop="false"
-                android:layout_alignParentLeft="false"
+                android:id="@+id/relPointB"
+                android:layout_below="@+id/relPointA"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="false"
-                android:layout_centerVertical="true" />
-        </RelativeLayout>
+                android:onClick="pickPlace"
+                android:clickable="true">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relPointB"
-            android:layout_below="@+id/relPointA"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:onClick="pickPlace"
-            android:clickable="true">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/menu_icon_navigator"
+                    android:layout_centerVertical="true" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:src="@drawable/menu_icon_navigator"
-                android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/txtEndPoint"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageView2"
+                    android:hint="Пункт назначения не выбран"
+                    style="@style/Widget.AppCompat.Base.AutoCompleteTextView"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="false" />
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/txtEndPoint"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/imageView2"
-                android:hint="Пункт назначения не выбран"
-                style="@style/Widget.AppCompat.Base.AutoCompleteTextView"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:clickable="false" />
-
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

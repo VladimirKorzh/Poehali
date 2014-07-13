@@ -14,95 +14,98 @@
         android:src="@drawable/background"
         android:scaleType="centerCrop" />
 
-
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/MyBox"
-        android:id="@+id/relAddressLine"
-        android:layout_marginTop="10dp">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:id="@+id/relContainer">
 
         <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            style="@style/MyBox"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linCar"
-            android:layout_marginBottom="4dp">
+            android:id="@+id/relAddressLinePointPicker" >
 
-            <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/txtAddress"
-                android:hint="Введите адрес или выберите точку на карте"
+            <RelativeLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:layout_gravity="center"
-                android:layout_centerVertical="true"
-                android:maxLines="3"
-                android:minLines="3"
-                android:layout_toLeftOf="@+id/iconNearSearchbar" />
+                android:id="@+id/linAddressLinePointPicker"
+                android:layout_marginBottom="4dp" >
 
-            <ImageView
+                <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/txtAddress"
+                    android:hint="Введите адрес или выберите точку на карте"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:layout_toLeftOf="@+id/iconNearSearchbar" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iconNearSearchbar"
+                    android:src="@drawable/icon_search_pencil"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relAddressLinePointPickerBtns"
+            android:layout_below="@+id/relAddressLinePointPicker"
+            android:layout_alignLeft="@+id/relAddressLinePointPicker"
+            android:layout_alignRight="@+id/relAddressLinePointPicker" >
+
+            <Button
+                style="@style/MySmallButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iconNearSearchbar"
-                android:src="@drawable/icon_search_pencil"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="true" />
+                android:text="Найти адрес"
+                android:id="@+id/btnSearchAddress"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="action_search_address" />
 
+            <Button
+                style="@style/MySmallButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Найти меня"
+                android:id="@+id/btnFindMe"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:onClick="action_use_current_location" />
         </RelativeLayout>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/relAddressLineButtons"
-        android:layout_below="@+id/relAddressLine"
-        android:layout_alignLeft="@+id/relAddressLine"
-        android:layout_alignRight="@+id/relAddressLine">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Найти адрес"
-            android:id="@+id/btnSearchAddress"
-            style="@style/MySmallButton"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="action_search_address" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Найти меня"
-            android:id="@+id/btnFindMe"
-            android:layout_alignParentTop="true"
+        <FrameLayout
+            style="@style/MyBox"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/frameLayout"
+            android:focusable="false"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            style="@style/MySmallButton"
-            android:onClick="action_use_current_location" />
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/relAddressLinePointPickerBtns">
+
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_gravity="center_horizontal|bottom" />
+        </FrameLayout>
     </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/frmMap"
-        android:focusable="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/relAddressLineButtons"
-        android:layout_margin="10dp"
-        style="@style/MyBox">
-
-        <fragment
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_gravity="center_horizontal|bottom" />
-
-    </FrameLayout>
 
 
 </RelativeLayout>

@@ -4,15 +4,22 @@
     android:layout_height="match_parent"
     tools:context="com.korzh.poehali.activities.MapView$PlaceholderFragment">
 
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
-
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/relContainer">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            style="@style/MyBox">
+
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -21,23 +28,32 @@
             android:clickable="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/description_icon_orders">
+            android:contentDescription="@string/description_icon_orders"
+            style="@style/MySmallButton">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
-                android:src="@drawable/police_marker" />
+                android:src="@drawable/police_button" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnNewRoute"
-            android:background="@drawable/style_order_list_item"
             android:layout_above="@+id/btnMarkPolice"
             android:layout_alignLeft="@+id/btnMarkPolice"
-            android:layout_alignStart="@+id/btnMarkPolice"></RelativeLayout>
+            android:layout_alignStart="@+id/btnMarkPolice"
+            style="@style/MySmallButton"
+            android:contentDescription="@string/description_icon_orders">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@drawable/new_route_marker" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

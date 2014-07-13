@@ -1,12 +1,17 @@
 package com.korzh.poehali.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -52,6 +57,9 @@ public class OrdersFragment extends Fragment implements OnDismissCallback {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_orders, container, false);
 
+        setHasOptionsMenu(true);
+
+
 //        mListView = (ListView) rootView.findViewById(R.id.listOrders);
 //
 //        mAdapter = new MyOrdersAdapter(getActivity(), arr);
@@ -64,31 +72,6 @@ public class OrdersFragment extends Fragment implements OnDismissCallback {
 //        animAdapter.setAbsListView(mListView);
 //        mListView.setAdapter(animAdapter);
 
-        final TextView txtProgress = (TextView) rootView.findViewById(R.id.txtProgress);
-        SeekBar seekBar = (SeekBar) rootView.findViewById(R.id.seekSearchRange);
-
-        seekBar.setMax(10);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                txtProgress.setText(String.valueOf(i));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getActivity(),"Changing to "+String.valueOf(seekBar.getProgress()), Toast.LENGTH_LONG).show();
-                String exchange = G.getInstance().mqBinding.getTargetExchange();
-                Location cityCenter = G.getInstance().mqBinding.getCityCenterFromExchange(exchange);
-                Location myLoc = G.getInstance().getLastKnownLocation();
-                ArrayList<String> binds = G.getInstance().mqBinding.getConsumerBindingKeysList(cityCenter, myLoc,seekBar.getProgress());
-                G.getInstance().mqBinding.ChangeBinds(binds);
-            }
-        });
 
 //
 //        ordersDispatcherInterface = new OrdersDispatcherInterface();
@@ -167,6 +150,86 @@ public class OrdersFragment extends Fragment implements OnDismissCallback {
 
 
 
+
+
+
+    public void ChangeSearchRangeDialog()
+    {
+        final AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
+        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        final View Viewlayout = inflater.inflate(R.layout.dialog_change_search_range,
+                                         (ViewGroup) getActivity().findViewById(R.id.relDialogChangeSearchRangeContainer));
+
+
+        final TextView txtProgress = (TextView) Viewlayout.findViewById(R.id.txtProgress);
+        final SeekBar seekBar = (SeekBar) Viewlayout.findViewById(R.id.seekSearchRange);
+
+
+        if (G.getInstance().ordersSearchRange != 0) txtProgress.setText(String.valueOf(G.getInstance().ordersSearchRange)+" км.");
+        else txtProgress.setText("Поиск выключен");
+
+        seekBar.setMax(10);
+        seekBar.setProgress(G.getInstance().ordersSearchRange);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (i != 0) txtProgress.setText(String.valueOf(i)+" км.");
+                else txtProgress.setText("Поиск выключен");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        popDialog.setTitle(getActivity().getString(R.string.dialog_msg_select_search_range));
+        popDialog.setView(Viewlayout);
+
+        // Button OK
+        popDialog.setPositiveButton("Продолжить",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(),"Область поиска изменена", Toast.LENGTH_LONG).show();
+                        String exchange = G.getInstance().mqBinding.getTargetExchange();
+                        Location cityCenter = G.getInstance().mqBinding.getCityCenterFromExchange(exchange);
+                        Location myLoc = G.getInstance().getLastKnownLocation();
+                        ArrayList<String> binds = G.getInstance().mqBinding.getConsumerBindingKeysList(cityCenter, myLoc,seekBar.getProgress());
+                        G.getInstance().mqBinding.ChangeBinds(binds);
+                        G.getInstance().ordersSearchRange = seekBar.getProgress();
+                    }
+                });
+
+        popDialog.setNegativeButton("Отмена",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+        popDialog.create();
+        popDialog.show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.orders_view, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_change_search_range) {
+            ChangeSearchRangeDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

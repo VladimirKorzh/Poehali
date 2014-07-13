@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.OrdersFragment">
+    tools:context=".fragments.OrdersFragment"
+    android:padding="10dp">
 
     <Button
         android:layout_width="fill_parent"
@@ -12,19 +13,6 @@
         android:layout_alignParentBottom="false"
         android:onClick="onButtonClick"
         android:layout_alignParentTop="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtProgress"
-        android:layout_above="@+id/seekSearchRange" />
-
-    <SeekBar
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekSearchRange"
-        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

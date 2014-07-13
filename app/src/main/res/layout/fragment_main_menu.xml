@@ -31,7 +31,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:id="@+id/relMainMenuMap">
+                    android:id="@+id/relMainMenuMap"
+                    android:background="@drawable/style_btn_mainmenu_left">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"

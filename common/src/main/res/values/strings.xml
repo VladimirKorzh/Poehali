@@ -75,6 +75,8 @@
     <string name="dialog_title_calculating_route">Расчитываем маршрут</string>
     <string name="title_activity_navigation_route_picker">Выбор маршрута</string>
     <string name="btnClearRoute">Очистить маршрут</string>
+    <string name="menu_btn_change_search_range">Область поиска</string>
+    <string name="dialog_msg_select_search_range">Выберите область поиска</string>
 
 
 </resources>

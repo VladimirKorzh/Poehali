@@ -117,12 +117,10 @@ public class NewNavigationRoute extends ActivityBase {
             if (status.equals("OK")){
                 // place start and end markers
                 googleMap.addMarker(new MarkerOptions().position(pointA)
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_start)));
 
                 googleMap.addMarker(new MarkerOptions().position(pointB)
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_finish)));
 
                 // set the boundaries for the map to zoom in on the route
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();

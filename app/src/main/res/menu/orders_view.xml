@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.korzh.poehali.activities.MapView" >
+
+    <item android:id="@+id/action_change_search_range"
+        android:title="@string/menu_btn_change_search_range"
+        app:showAsAction="always|withText" />
+
+</menu>

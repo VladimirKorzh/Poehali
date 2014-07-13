@@ -3,6 +3,7 @@ package com.korzh.poehali.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.korzh.poehali.R;
@@ -30,6 +31,11 @@ public class OrdersView extends ActivityBase {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     public void onButtonClick(View v){

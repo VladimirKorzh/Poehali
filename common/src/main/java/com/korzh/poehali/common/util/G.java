@@ -28,8 +28,15 @@ public class G {
     public static LocationManager locationManager = null;
     public SharedPreferences settings = null;
     public String userId;
-    public NodeList currentNavigationRoute = null;
     public MQBinding mqBinding = null;
+
+
+//  USER SETTINGS OR EXECUTION PARAMETERS
+    public NodeList currentNavigationRoute = null;
+    public int ordersSearchRange = 0;
+
+
+
 
     public static G getInstance(){
         return instance;
@@ -43,7 +50,7 @@ public class G {
 
         RabbitMQHelper rabbitMQHelper = RabbitMQHelper.getInstance();
         mqBinding = new MQBinding();
-        ArrayList<String> binds = mqBinding.getConsumerBindingKeysList(mqBinding.getCityCenterFromExchange(mqBinding.getTargetExchange()), getLastKnownLocation(), 3);
+        ArrayList<String> binds = mqBinding.getConsumerBindingKeysList(mqBinding.getCityCenterFromExchange(mqBinding.getTargetExchange()), getLastKnownLocation(), ordersSearchRange);
         binds.add("message."+userId);
         mqBinding.ChangeBinds(binds);
         mqBinding.Start();

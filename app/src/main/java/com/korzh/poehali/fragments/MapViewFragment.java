@@ -385,12 +385,10 @@ public class MapViewFragment extends Fragment {
                 currentRoutePolyline = googleMap.addPolyline(gd.getPolyline(currentRoute, C.MAP_ROUTE_WIDTH_DP, ACTIVE));
 
                 pointAMarker = googleMap.addMarker(new MarkerOptions().position(start)
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_start)));
 
                 pointBMarker = googleMap.addMarker(new MarkerOptions().position(end)
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_finish)));
             }
         }
     }
