@@ -79,12 +79,10 @@ public class NewOrder extends ActivityBase {
                 LatLng coord = data.getParcelableExtra("latlng");
                 U.Log(getClass().getSimpleName(), "onActivityResult: "+address+" "+coord);
                 if (clicked.getId() == R.id.relPointA) {
-                    U.Log(getClass().getSimpleName(), "point A");
                     startPoint.setText(address);
                     pointA = coord;
                 }
                 if (clicked.getId() == R.id.relPointB) {
-                    U.Log(getClass().getSimpleName(), "point B");
                     endPoint.setText(address);
                     pointB = coord;
                 }

@@ -16,10 +16,15 @@ public class RabbitMQHelper {
 
     private final String TAG = "RabbitMQHelper";
 
-    public Connection connection = null;
+    private Connection connection = null;
     private static RabbitMQHelper instance = null;
 
-    public RabbitMQHelper(){
+
+    private static final int IDLE = 0;
+    private static final int CONNECTING = 1;
+    private static int status;
+
+    private RabbitMQHelper(){
         instance = this;
     }
 
@@ -31,14 +36,26 @@ public class RabbitMQHelper {
         return instance;
     }
 
-    public void connect(){
+    public Connection getConnection(){
+        if (connection == null && status != CONNECTING){
+            connect();
+        }
+        return connection;
+    }
+
+
+    private void connect(){
         try {
+            status = CONNECTING;
             disconnect();
             ConnectionFactory connectionFactory = new ConnectionFactory();
             connectionFactory.setUri(C.MQ_CONSUMER_URI);
 
             // sends keep alive packets every so often
             connectionFactory.setRequestedHeartbeat(C.MQ_CONNECTION_HEARTBEAT);
+
+            // set timeout
+            //connectionFactory.setConnectionTimeout(C.MQ_CONNECTION_TIMEOUT);
 
             connection = connectionFactory.newConnection();
             connection.addShutdownListener(new ShutdownListener() {
@@ -54,6 +71,9 @@ public class RabbitMQHelper {
         } catch (Exception e) {
             U.Log(getClass().getSimpleName(),"Error connecting to MQ: " + e.getMessage());
         }
+        finally {
+            status = IDLE;
+        }
     }
 
     public void disconnect(){
@@ -65,7 +85,4 @@ public class RabbitMQHelper {
             }
         }
     }
-
-
-
 }

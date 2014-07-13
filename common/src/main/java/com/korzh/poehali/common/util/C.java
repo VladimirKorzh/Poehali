@@ -38,7 +38,8 @@ public class C {
     public static final String MOTP_ENDPOINT_CONFIRM = "https://api.mOTP.in/v1/OTP/"+MOTP_API_KEY+"/";
 
 //  MESSAGE QUEUE SETTINGS
-    public static final int MQ_CONNECTION_HEARTBEAT = 60;
+    public static final int MQ_CONNECTION_HEARTBEAT = 10;
+    //public static final int MQ_CONNECTION_TIMEOUT = 12000;
     public static final long MQ_CONSUMER_AUTORECONNECT_TIME = 5000;
     public static final String MQ_PRODUCER_URI = "amqp://TNULbwzS:bm_3GOIvL4qSupa4BdYryLYEtHFq5IJO@wet-dandelion-7.bigwig.lshift.net:11184/BnRXhLF-7nS7";
     public static final String MQ_CONSUMER_URI = "amqp://TNULbwzS:bm_3GOIvL4qSupa4BdYryLYEtHFq5IJO@wet-dandelion-7.bigwig.lshift.net:11185/BnRXhLF-7nS7";

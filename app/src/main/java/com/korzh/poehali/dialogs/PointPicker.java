@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -72,6 +73,7 @@ public class PointPicker extends ActivityBase implements GoogleMap.OnMapClickLis
 
         googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         googleMap.setOnMapClickListener(this);
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
 
         selected_position_marker = googleMap.addMarker(new MarkerOptions()
                 .position(C.LOCATION_KIEV)
@@ -83,6 +85,13 @@ public class PointPicker extends ActivityBase implements GoogleMap.OnMapClickLis
                 .zoom(C.DEFAULT_MAP_ZOOM)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        if (getIntent().getExtras().getInt("requestCode") == C.REQUEST_CODE_NAVIGATOR_SELECT_POINT){
+            Button btnFindMe = (Button) findViewById(R.id.btnFindMe);
+            btnFindMe.setVisibility(View.GONE);
+        }
+
+
     }
 
 

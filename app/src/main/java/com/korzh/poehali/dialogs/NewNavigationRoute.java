@@ -2,7 +2,6 @@ package com.korzh.poehali.dialogs;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -50,11 +49,15 @@ public class NewNavigationRoute extends ActivityBase {
 
     private LatLng pointA, pointB;
 
+    private int INACTIVE, ACTIVE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_route_picker);
+
+        INACTIVE  = getResources().getColor(R.color.INACTIVE_ROUTE);
+        ACTIVE    = getResources().getColor(R.color.ACTIVE_ROUTE);
 
         mListView = (ListView) findViewById(R.id.listPossibleRoutes);
 
@@ -67,21 +70,26 @@ public class NewNavigationRoute extends ActivityBase {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
                 // set all polys to gray
                 for(Polyline p : polys){
-                    p.setColor(Color.DKGRAY);
+                    p.setColor(INACTIVE);
+                    p.setZIndex(0);
                 }
 
-                polys.get(position).setColor(Color.GREEN);
+                polys.get(position).setColor(ACTIVE);
+                polys.get(position).setZIndex(100);
+
                 lastSelectedRoutePosition = position;
             }
         });
 
 
         googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
+
 
         Intent i = new Intent(this, PointPicker.class);
+        i.putExtra("requestCode", C.REQUEST_CODE_NAVIGATOR_SELECT_POINT);
         startActivityForResult(i, C.REQUEST_CODE_NAVIGATOR_SELECT_POINT);
     }
 
@@ -132,19 +140,17 @@ public class NewNavigationRoute extends ActivityBase {
                     PossibleRoute r = new PossibleRoute();
                     r.setSummary(summary);
                     r.setDuration(gd.getTotalDurationText(routes.get(summary)));
-                    r.setLength(gd.getTotalDurationText(routes.get(summary)));
+                    r.setLength(gd.getTotalDistanceText(routes.get(summary)));
                     r.setRoute(routes.get(summary));
 
                     // draw the line for this route and store it in array
-                    polys.add(googleMap.addPolyline(gd.getPolyline(routes.get(summary), C.MAP_ROUTE_WIDTH_DP, Color.DKGRAY)));
+                    polys.add(googleMap.addPolyline(gd.getPolyline(routes.get(summary), C.MAP_ROUTE_WIDTH_DP, INACTIVE)));
                     arr.add(r);
                     i++;
                 }
 
                 // tell the adapter that we are done
                 mAdapter.notifyDataSetChanged();
-                mListView.setSelection(0);
-                polys.get(0).setColor(Color.GREEN);
             }
         }
     };

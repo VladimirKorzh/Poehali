@@ -19,10 +19,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnMarkPolice"
             android:clickable="true"
-            android:background="@drawable/style_order_list_item"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/description_icon_orders">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/police_marker" />
         </RelativeLayout>
 
         <RelativeLayout

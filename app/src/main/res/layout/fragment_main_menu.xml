@@ -31,8 +31,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:id="@+id/relMainMenuMap"
-                    android:background="@drawable/btn_mainmenu_left">
+                    android:id="@+id/relMainMenuMap">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
                             android:id="@+id/textView"
                             android:layout_centerHorizontal="true"
                             android:layout_below="@+id/imageView3"
-                            android:textColor="#ffffff" />
+                            android:textColor="#e1e0e0" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -87,7 +86,7 @@
                             android:layout_below="@+id/imageView4"
                             android:gravity="center_horizontal"
                             android:layout_centerHorizontal="true"
-                            android:textColor="#ffffff" />
+                            android:textColor="#e1e0e0" />
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -118,7 +117,7 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:id="@+id/relMainMenuProfile"
-                    android:background="@drawable/btn_mainmenu_left">
+                    android:background="@drawable/style_btn_mainmenu_left">
 
 
                     <RelativeLayout
@@ -143,7 +142,7 @@
                             android:layout_below="@+id/imageView5"
                             android:gravity="center_horizontal"
                             android:layout_centerHorizontal="true"
-                            android:textColor="#ffffff" />
+                            android:textColor="#e1e0e0" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -177,7 +176,7 @@
                             android:layout_below="@+id/imageView6"
                             android:gravity="center_horizontal"
                             android:layout_centerHorizontal="true"
-                            android:textColor="#ffffff" />
+                            android:textColor="#e1e0e0" />
                     </RelativeLayout>
 
                 </RelativeLayout>

@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.korzh.poehali.common.map.AnnounceMarker;
-import com.korzh.poehali.common.network.MessageProducer;
-import com.korzh.poehali.common.network.NetworkMessage;
 import com.korzh.poehali.common.network.packets.GlobalMapAnnouncePacket;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
@@ -35,18 +33,11 @@ public class GlobalAnnounceInterface {
     }
 
     public void announcePolice(){
-        NetworkMessage msg = new NetworkMessage();
-        msg.setQueue(C.DEFAULT_POLICE_QUEUE);
-        msg.setDurable(true);
-
         Location myLoc = G.getInstance().getLastKnownLocation();
         LatLng latLng = new LatLng(myLoc.getLatitude(),myLoc.getLongitude());
 
         GlobalMapAnnouncePacket pkt = new GlobalMapAnnouncePacket(latLng, C.ANNOUNCE_PACKET_POLICE);
-
-        msg.setData(pkt.toString());
-        MessageProducer messageProducer = new MessageProducer();
-        messageProducer.execute(msg);
+        G.getInstance().mqBinding.SendMessage(pkt.toString(),"announce",myLoc);
 
         announceMarkers.add(new AnnounceMarker(googleMap, pkt));
     }
@@ -87,15 +78,14 @@ public class GlobalAnnounceInterface {
             }
 
             if (array != null) {
+                GlobalMapAnnouncePacket g;
                 for (int i=0; i<array.length(); i++) {
-                    GlobalMapAnnouncePacket g = null;
                     try {
                         g = new GlobalMapAnnouncePacket((JSONObject) array.get(i));
                         announceMarkers.add(new AnnounceMarker(googleMap, g));
                     } catch (JSONException e) {
                         U.Log(getClass().getSimpleName(), "Error reading json");
                     }
-
                 }
             }
         }

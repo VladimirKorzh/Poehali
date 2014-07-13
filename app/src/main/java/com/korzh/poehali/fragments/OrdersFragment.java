@@ -1,36 +1,38 @@
 package com.korzh.poehali.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.korzh.poehali.R;
-import com.korzh.poehali.dialogs.NewOrder;
-import com.korzh.poehali.common.interfaces.OrdersDispatcherInterface;
-import com.korzh.poehali.common.network.MessageConsumer;
+import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
 import com.korzh.poehali.common.network.packets.OrderPacket;
+import com.korzh.poehali.common.network.packets.frames.LocationJson;
+import com.korzh.poehali.common.network.packets.frames.OrderDetailsJson;
+import com.korzh.poehali.common.network.packets.frames.UserJson;
 import com.korzh.poehali.common.util.C;
-import com.korzh.poehali.common.util.U;
+import com.korzh.poehali.common.util.G;
+import com.korzh.poehali.dialogs.NewOrder;
 import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.SwipeDismissAdapter;
-import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
-import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingLeftInAnimationAdapter;
-import com.rabbitmq.client.QueueingConsumer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by vladimir on 7/4/2014.
@@ -38,7 +40,7 @@ import java.util.Arrays;
 public class OrdersFragment extends Fragment implements OnDismissCallback {
     private MyOrdersAdapter mAdapter = null;
     private ListView mListView = null;
-    private OrdersDispatcherInterface ordersDispatcherInterface = null;
+    //private OrdersDispatcherInterface ordersDispatcherInterface = null;
     private ArrayList<OrderPacket> arr = new ArrayList<OrderPacket>();
 
     public OrdersFragment() {}
@@ -50,52 +52,79 @@ public class OrdersFragment extends Fragment implements OnDismissCallback {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_orders, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.listOrders);
+//        mListView = (ListView) rootView.findViewById(R.id.listOrders);
+//
+//        mAdapter = new MyOrdersAdapter(getActivity(), arr);
+//
+//        SwipeDismissAdapter adapter = new SwipeDismissAdapter(mAdapter, this);
+//        adapter.setAbsListView(mListView);
+//        mListView.setAdapter(adapter);
+//
+//        final AnimationAdapter animAdapter = new SwingLeftInAnimationAdapter(mAdapter);
+//        animAdapter.setAbsListView(mListView);
+//        mListView.setAdapter(animAdapter);
 
-        mAdapter = new MyOrdersAdapter(getActivity(), arr);
+        final TextView txtProgress = (TextView) rootView.findViewById(R.id.txtProgress);
+        SeekBar seekBar = (SeekBar) rootView.findViewById(R.id.seekSearchRange);
 
-        SwipeDismissAdapter adapter = new SwipeDismissAdapter(mAdapter, this);
-        adapter.setAbsListView(mListView);
-        mListView.setAdapter(adapter);
-
-        final AnimationAdapter animAdapter = new SwingLeftInAnimationAdapter(mAdapter);
-        animAdapter.setAbsListView(mListView);
-        mListView.setAdapter(animAdapter);
-
-        ordersDispatcherInterface = new OrdersDispatcherInterface();
-
-        ordersDispatcherInterface.setOnNewOrderReceive(new MessageConsumer.OnReceiveMessageHandler() {
+        seekBar.setMax(10);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onReceiveMessage(QueueingConsumer.Delivery delivery) {
-                byte[] message = delivery.getBody();
-                String data = new String(message);
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(data);
-                } catch (JSONException e) {
-                    U.Log(getClass().getSimpleName(), "Error reading json");
-                }
-                final OrderPacket order = new OrderPacket(jsonObject);
-                U.Log(getClass().getSimpleName(), "New order received: "+order.toString());
-                arr.add(order);
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                txtProgress.setText(String.valueOf(i));
+            }
 
-                Handler h = new Handler();
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        arr.remove(order);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                };
-                h.postDelayed(r, 5000);
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-                animAdapter.setShouldAnimateFromPosition(arr.size()-1);
-                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getActivity(),"Changing to "+String.valueOf(seekBar.getProgress()), Toast.LENGTH_LONG).show();
+                String exchange = G.getInstance().mqBinding.getTargetExchange();
+                Location cityCenter = G.getInstance().mqBinding.getCityCenterFromExchange(exchange);
+                Location myLoc = G.getInstance().getLastKnownLocation();
+                ArrayList<String> binds = G.getInstance().mqBinding.getConsumerBindingKeysList(cityCenter, myLoc,seekBar.getProgress());
+                G.getInstance().mqBinding.ChangeBinds(binds);
             }
         });
 
-        ordersDispatcherInterface.StartOrdersListener();
-        ordersDispatcherInterface.StartRepliesListener();
+//
+//        ordersDispatcherInterface = new OrdersDispatcherInterface();
+//
+//        ordersDispatcherInterface.setOnNewOrderReceive(new MessageConsumer.OnReceiveMessageHandler() {
+//            @Override
+//            public void onReceiveMessage(QueueingConsumer.Delivery delivery) {
+//                byte[] message = delivery.getBody();
+//                String data = new String(message);
+//                JSONObject jsonObject = null;
+//                try {
+//                    jsonObject = new JSONObject(data);
+//                } catch (JSONException e) {
+//                    U.Log(getClass().getSimpleName(), "Error reading json");
+//                }
+//                final OrderPacket order = new OrderPacket(jsonObject);
+//                U.Log(getClass().getSimpleName(), "New order received: "+order.toString());
+//                arr.add(order);
+//
+//                Handler h = new Handler();
+//                Runnable r = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        arr.remove(order);
+//                        mAdapter.notifyDataSetChanged();
+//                    }
+//                };
+//                h.postDelayed(r, 5000);
+//
+//                animAdapter.setShouldAnimateFromPosition(arr.size()-1);
+//                mAdapter.notifyDataSetChanged();
+//            }
+//        });
+//
+//        ordersDispatcherInterface.StartOrdersListener();
+//        ordersDispatcherInterface.StartRepliesListener();
 
 //        // send order every so often
 //        final Handler h = new Handler();
@@ -135,56 +164,88 @@ public class OrdersFragment extends Fragment implements OnDismissCallback {
             startActivityForResult(myIntent, C.REQUEST_CODE_NAVIGATOR_NEW_ROUTE);
         }
     }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-//        if (requestCode == C.REQUEST_CODE_NAVIGATOR_NEW_ROUTE) {
-//
-//            if (resultCode == Activity.RESULT_OK) {
-//
-//                final GoogleDirectionsApi gd = new GoogleDirectionsApi(getActivity());
-//
-//                final Document doc = G.getInstance().lastPickedRoute;
-//                if (doc != null) {
-//                    final Handler h = new Handler();
-//                    Runnable r = new Runnable() {
-//                        private int extra = 0;
-//                        @Override
-//                        public void run() {
-////                            if (extra <= G.getInstance().getStartingFare(gd.getTotalDistanceText(doc))) {
-////                                LatLng from = data.getParcelableExtra("startLatLng");
-////                                LatLng to = data.getParcelableExtra("endLatLng");
-////
-////                                UserJson userFrame = new UserJson(true);
-////                                LocationJson userLocationFrameOrigin = new LocationJson(from.latitude, from.longitude);
-////                                LocationJson userLocationFrameDestination = new LocationJson(to.latitude, to.longitude);
-////                                OrderDetailsJson orderDetailsJson = new OrderDetailsJson(
-////                                        G.getInstance().getStartingFare(gd.getTotalDistanceText(doc)) + extra,
-////                                        gd.getTotalDistanceText(doc), gd.getTotalDurationText(doc),
-////                                        gd.getStartAddress(doc), gd.getEndAddress(doc)
-////                                );
-////
-////                                OrderPacket pkt = new OrderPacket(userFrame, userLocationFrameOrigin, userLocationFrameDestination, orderDetailsJson);
-////                                ordersDispatcherInterface.AnnounceOrder(pkt);
-////                                extra += 5;
-////                                h.postDelayed(this, 5000);
-//                            }
-//                        }
-//                    };
-//                    h.post(r);
-//                }
-//            }
-//        }
-//    }
+
+
+
+
+
+
+
+
+
+    LocationJson userLocationFrameOrigin, userLocationFrameDestination;
+    UserJson userFrame;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        if (requestCode == C.REQUEST_CODE_NAVIGATOR_NEW_ROUTE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                final GoogleDirectionsApi gd = new GoogleDirectionsApi(getActivity());
+
+                LatLng from = data.getParcelableExtra("startLatLng");
+                LatLng to = data.getParcelableExtra("endLatLng");
+
+                userLocationFrameOrigin = new LocationJson(from.latitude, from.longitude);
+                userLocationFrameDestination = new LocationJson(to.latitude, to.longitude);
+                userFrame = new UserJson(true);
+
+                gd.setOnDirectionResponseListener(new GoogleDirectionsApi.OnDirectionResponseListener() {
+                    @Override
+                    public void onResponse(String status, Document doc, GoogleDirectionsApi gd) {
+                        publishOrder(status, doc, gd);
+                    }
+                });
+
+                gd.request(from, to, "driving");
+            }
+        }
+    }
+
+
+    public void publishOrder(String status, Document doc, GoogleDirectionsApi gd){
+        if (doc != null) {
+            HashMap<String, NodeList> routes = gd.getRoutes(doc);
+
+            if (!routes.isEmpty()){
+                String key = (String) routes.keySet().toArray()[0];
+                NodeList r = routes.get(key);
+
+                OrderDetailsJson orderDetailsJson = new OrderDetailsJson(
+                        G.getInstance().getStartingFare(gd.getTotalDistanceText(r)),
+                        gd.getTotalDistanceText(r), gd.getTotalDurationText(r),
+                        gd.getStartAddress(r), gd.getEndAddress(r)
+                );
+
+                OrderPacket pkt = new OrderPacket(userFrame, userLocationFrameOrigin, userLocationFrameDestination, orderDetailsJson);
+
+                Location temp = new Location("test");
+                temp.setLatitude(userLocationFrameOrigin.getLattitude());
+                temp.setLongitude(userLocationFrameOrigin.getLongitude());
+
+                G.getInstance().mqBinding.SendMessage(pkt.toString(),"order", temp);
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (ordersDispatcherInterface != null) {
-            ordersDispatcherInterface.StopOrdersListener();
-            ordersDispatcherInterface.StopRepliesListener();
-        }
+//        if (ordersDispatcherInterface != null) {
+//            ordersDispatcherInterface.StopOrdersListener();
+//            ordersDispatcherInterface.StopRepliesListener();
+//        }
     }
 
     @Override

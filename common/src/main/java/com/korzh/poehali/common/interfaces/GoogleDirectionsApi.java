@@ -114,8 +114,13 @@ public class GoogleDirectionsApi {
         NodeList nodes = doc.getElementsByTagName("route");
         for (int i = 0; i<nodes.getLength(); ++i){
             NodeList childNodes = nodes.item(i).getChildNodes();
-            Node summary = childNodes.item(getNodeIndex(childNodes,"summary"));
-            result.put(summary.getTextContent(), childNodes);
+
+            Node summary = childNodes.item(getNodeIndex(childNodes, "summary"));
+            if ("".equals(summary.getTextContent()))
+                result.put(getEndAddress(childNodes), childNodes);
+            else
+                result.put(summary.getTextContent(), childNodes);
+
         }
         return result;
     }

@@ -11,8 +11,15 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listPossibleRoutes" />
+        android:layout_height="200dp"
+        android:id="@+id/listPossibleRoutes"
+        android:choiceMode="singleChoice"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:listSelector="@drawable/button_small_pressed"
+        android:layout_marginTop="10dp" />
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -22,7 +29,9 @@
         android:layout_alignParentStart="false"
         android:visibility="visible"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/listPossibleRoutes">
+        android:layout_below="@+id/listPossibleRoutes"
+        style="@style/MyBox"
+        android:layout_marginBottom="10dp">
 
         <fragment
             android:id="@+id/map"

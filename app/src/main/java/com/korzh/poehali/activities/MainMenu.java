@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
 import com.korzh.poehali.R;
-import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.fragments.MainMenuFragment;
 
 /**
@@ -19,7 +18,6 @@ public class MainMenu extends ActivityBase {
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_base);
-        new G(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

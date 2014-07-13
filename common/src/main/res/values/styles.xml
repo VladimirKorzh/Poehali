@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat">
         <item name="android:windowAnimationStyle">@style/Animation.MyAwesomeAnimation</item>
-        <item name="android:textColorHint">@color/Black</item>
+        <item name="android:textColorHint">@color/GhostWhite</item>
     </style>
 
     <style name="Light" parent="Theme.AppCompat.Light"/>
@@ -53,7 +53,6 @@
     <style name="mySubPanel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">-10dp</item>
     </style>
 
 

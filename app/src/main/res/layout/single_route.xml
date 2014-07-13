@@ -6,13 +6,15 @@
     style="@style/MyBox">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/txtSummary"
         android:hint="бул. Леси Украинки"
         android:singleLine="true"
-        android:layout_alignParentTop="true" />
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/txtDuration"
+        android:layout_marginRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"

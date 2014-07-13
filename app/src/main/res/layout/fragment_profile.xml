@@ -27,14 +27,16 @@
             android:id="@+id/btnFillBalance"
             android:onClick="onButtonClick"
             style="@style/MySmallButton"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relContactInfoBtn"
         style="@style/mySubPanel"
         android:layout_below="@+id/relUserInfo"
-        android:layout_alignRight="@+id/relUserInfo">
+        android:layout_alignRight="@+id/relUserInfo"
+        android:layout_height="wrap_content">
 
         <Button
             android:text="Сохранить"
@@ -43,7 +45,8 @@
             android:onClick="onButtonClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MySmallButton" />
+            style="@style/MySmallButton"
+            android:layout_marginTop="-1dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -73,7 +76,8 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edtName"
-                android:hint="Имя" />
+                android:hint="Имя"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
@@ -117,7 +121,8 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edtCar"
-                android:hint="Автомобиль" />
+                android:hint="Автомобиль"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
@@ -135,7 +140,8 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edtPlate"
-                android:hint="Номерной знак" />
+                android:hint="Номерной знак"
+                android:textColor="#ffffff" />
 
         </LinearLayout>
 

@@ -19,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MyBox"
-        android:id="@+id/relAddressLine">
+        android:id="@+id/relAddressLine"
+        android:layout_marginTop="10dp">
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -30,31 +31,57 @@
 
             <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/txtAddress"
-                android:hint="Введите адрес"
+                android:hint="Введите адрес или выберите точку на карте"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:imeOptions="actionSearch"
+                android:singleLine="false"
                 android:layout_gravity="center"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_toLeftOf="@+id/imageButton" />
+                android:layout_centerVertical="true"
+                android:maxLines="3"
+                android:minLines="3"
+                android:layout_toLeftOf="@+id/iconNearSearchbar" />
 
-            <ImageButton
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
-                android:src="@drawable/abc_ic_search"
-                android:layout_gravity="right|top"
-                android:onClick="action_search_address"
-                android:layout_weight="1"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:id="@+id/iconNearSearchbar"
+                android:src="@drawable/icon_search_pencil"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relAddressLineButtons"
+        android:layout_below="@+id/relAddressLine"
+        android:layout_alignLeft="@+id/relAddressLine"
+        android:layout_alignRight="@+id/relAddressLine">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Найти адрес"
+            android:id="@+id/btnSearchAddress"
+            style="@style/MySmallButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="action_search_address" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Найти меня"
+            android:id="@+id/btnFindMe"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            style="@style/MySmallButton"
+            android:onClick="action_use_current_location" />
     </RelativeLayout>
 
     <FrameLayout
@@ -63,11 +90,10 @@
         android:id="@+id/frmMap"
         android:focusable="false"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/relAddressLine"
-        android:layout_marginTop="10dp">
+        android:layout_below="@+id/relAddressLineButtons"
+        android:layout_margin="10dp"
+        style="@style/MyBox">
 
         <fragment
             android:id="@+id/map"
@@ -75,20 +101,6 @@
             android:layout_height="match_parent"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_gravity="center_horizontal|bottom" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton2"
-            android:src="@drawable/ic_btn_mylocation"
-            android:layout_gravity="right|top"
-            android:onClick="action_use_current_location"
-            android:background="#aa000000"
-            android:layout_alignTop="@+id/txtAddress"
-            android:layout_alignBottom="@+id/txtAddress"
-            android:layout_toRightOf="@+id/txtAddress"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp" />
 
     </FrameLayout>
 

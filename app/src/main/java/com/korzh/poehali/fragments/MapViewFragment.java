@@ -30,13 +30,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
-import com.korzh.poehali.dialogs.NewNavigationRoute;
 import com.korzh.poehali.common.interfaces.GlobalAnnounceInterface;
 import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
-import com.korzh.poehali.common.interfaces.LocationBroadcaster;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.common.util.U;
+import com.korzh.poehali.dialogs.NewNavigationRoute;
 
 import org.w3c.dom.NodeList;
 
@@ -53,7 +52,6 @@ public class MapViewFragment extends Fragment {
     private Location lastKnownLocation = null;
 
     private GlobalAnnounceInterface globalAnnounceInterface = null;
-    private LocationBroadcaster locationBroadcaster = null;
 
     private RelativeLayout sendMarkPolice = null;
 
@@ -108,9 +106,6 @@ public class MapViewFragment extends Fragment {
             if (googleMap != null) {
                 globalAnnounceInterface = new GlobalAnnounceInterface(googleMap);
                 globalAnnounceInterface.getWhatsAnnouncedGlobally();
-                locationBroadcaster = new LocationBroadcaster(getActivity(), googleMap);
-                locationBroadcaster.StartBroadcast();
-                locationBroadcaster.StartListener();
                 setUpMap();
             }
         }
@@ -332,10 +327,6 @@ public class MapViewFragment extends Fragment {
             //an exception here :-(
             U.Log("FUCKING MAP","");
         }
-
-        locationBroadcaster.StopListener();
-        locationBroadcaster.StopBroadcast();
-
     }
 
     @Override
@@ -385,7 +376,13 @@ public class MapViewFragment extends Fragment {
                 LatLng end = data.getParcelableExtra("pointB");
 
                 currentRoute = G.getInstance().currentNavigationRoute;
-                currentRoutePolyline = googleMap.addPolyline(gd.getPolyline(currentRoute, C.MAP_ROUTE_WIDTH_DP, C.MAP_ROUTE_COLOR));
+                G.getInstance().currentNavigationRoute = null;
+                if (currentRoutePolyline != null) {
+                    currentRoutePolyline.remove();
+                    currentRoutePolyline = null;
+                }
+                int ACTIVE    = getResources().getColor(R.color.ACTIVE_ROUTE);
+                currentRoutePolyline = googleMap.addPolyline(gd.getPolyline(currentRoute, C.MAP_ROUTE_WIDTH_DP, ACTIVE));
 
                 pointAMarker = googleMap.addMarker(new MarkerOptions().position(start)
                         .icon(BitmapDescriptorFactory.defaultMarker(
