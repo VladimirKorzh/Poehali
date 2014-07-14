@@ -15,7 +15,6 @@ import com.korzh.poehali.common.util.C;
  */
 public class TaxiDriverMarker extends MapMarkerBase {
     public TaxiDriverMarker(GoogleMap googleMap, UserLocationPacket userLocationPacket){
-
         BitmapDescriptor img = null;
         if (userLocationPacket.getUserFrame().isFree()){
             img = BitmapDescriptorFactory.fromResource(R.drawable.img_taxifree);
@@ -34,7 +33,9 @@ public class TaxiDriverMarker extends MapMarkerBase {
                 marker.remove();
             }
         };
-        handler.postDelayed(removeMarker, C.LOCATION_BROADCASTER_UPDATES_MILLIS);
+        long timeNow = System.currentTimeMillis();
+        long remainingTime = C.LOCATION_BROADCASTER_UPDATES_MILLIS - (timeNow - userLocationPacket.getRecvdMillis());
+        handler.postDelayed(removeMarker, remainingTime);
     }
 
 }

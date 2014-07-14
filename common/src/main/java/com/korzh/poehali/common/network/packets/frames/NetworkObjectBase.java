@@ -7,6 +7,7 @@ import org.json.JSONObject;
  */
 public abstract class NetworkObjectBase {
     protected JSONObject jsonObject;
+    protected long recvdMillis;
 
     public NetworkObjectBase(){
         jsonObject = new JSONObject();
@@ -14,10 +15,12 @@ public abstract class NetworkObjectBase {
 
     public NetworkObjectBase(JSONObject obj) {
         jsonObject = obj;
+        recvdMillis = System.currentTimeMillis();
     }
 
     @Override
     public String toString(){ return jsonObject.toString();}
+    public long getRecvdMillis(){ return recvdMillis; }
     public byte[] getBytes(){
         return jsonObject.toString().getBytes();
     }

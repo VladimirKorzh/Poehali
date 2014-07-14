@@ -1,5 +1,6 @@
 package com.korzh.poehali.common.network.packets.frames;
 
+import com.korzh.poehali.common.network.packets.OrderPacket;
 import com.korzh.poehali.common.util.U;
 
 import org.json.JSONException;
@@ -47,15 +48,12 @@ public class OrderDetailsJson extends NetworkObjectBase{
     public String getOriginAddress() {
         return originAddress;
     }
-
     public String getDestAddress() {
         return destAddress;
     }
-
     public String getDuration() {
         return duration;
     }
-
     public double getPrice(){
         return price;
     }

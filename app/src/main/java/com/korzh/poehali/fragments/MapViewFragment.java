@@ -32,38 +32,46 @@ import com.korzh.poehali.R;
 import com.korzh.poehali.activities.MapView;
 import com.korzh.poehali.common.interfaces.GlobalAnnounceInterface;
 import com.korzh.poehali.common.interfaces.GoogleDirectionsApi;
+import com.korzh.poehali.common.interfaces.LocationReceiver;
+import com.korzh.poehali.common.map.TaxiDriverMarker;
+import com.korzh.poehali.common.network.MessageConsumer;
+import com.korzh.poehali.common.network.packets.OrderPacket;
+import com.korzh.poehali.common.network.packets.UserLocationPacket;
 import com.korzh.poehali.common.util.C;
 import com.korzh.poehali.common.util.G;
 import com.korzh.poehali.common.util.U;
 import com.korzh.poehali.dialogs.NewNavigationRoute;
 
+import org.json.JSONObject;
 import org.w3c.dom.NodeList;
 
-public class MapViewFragment extends Fragment {
+import java.util.ArrayList;
+
+public class MapViewFragment extends Fragment implements GoogleMap.OnMapClickListener  {
 
     public int MAP_MODE = C.MAP_MODE_BIRDVIEW;
 
     private GoogleMap googleMap = null;
 
-    private Marker myLocationMarker = null;
-    private Marker myDrivingMarker = null;
-    private Circle mySearchRadiusCircle = null;
-
     private Location lastKnownLocation = null;
 
-    private GlobalAnnounceInterface globalAnnounceInterface = null;
+
+
+    private GlobalAnnounceInterface globalAnnounceInterface;
+    private LocationReceiver locationReceiver;
+
 
     private RelativeLayout sendMarkPolice = null;
+
+
 
     private NodeList currentRoute = null;
     private Polyline currentRoutePolyline = null;
     private Marker   pointAMarker = null;
     private Marker   pointBMarker = null;
-
-
-
-
-
+    private Marker   myLocationMarker = null;
+    private Marker   myDrivingMarker = null;
+    private Circle   mySearchRadiusCircle = null;
 
     public void ClearCurrentRoute(){
         if (currentRoutePolyline != null) currentRoutePolyline.remove();
@@ -80,6 +88,12 @@ public class MapViewFragment extends Fragment {
 
 
 
+
+
+
+
+    @Override
+    public void onMapClick(LatLng latLng) {}
 
 
     private LatLng getMapCenterForDriving(LatLng latLng, double bearing, float distance){
@@ -104,8 +118,6 @@ public class MapViewFragment extends Fragment {
             googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
-                globalAnnounceInterface = new GlobalAnnounceInterface(googleMap);
-                globalAnnounceInterface.getWhatsAnnouncedGlobally();
                 setUpMap();
             }
         }
@@ -235,7 +247,6 @@ public class MapViewFragment extends Fragment {
     }
 
     private void setUpMap() {
-
         googleMap.getUiSettings().setCompassEnabled(false);
         googleMap.setTrafficEnabled(true);
 
@@ -256,7 +267,7 @@ public class MapViewFragment extends Fragment {
                 .radius(C.ORDER_SEARCH_RADIUS)
                 .strokeWidth(0)
                 .strokeColor(Color.LTGRAY)
-                .fillColor(C.SEARCH_CIRCLE_COLOR)
+                .fillColor(G.getInstance().ordersSearchRange)
                 .visible(false));
 
         switchMode(C.MAP_MODE_BIRDVIEW);
@@ -289,6 +300,9 @@ public class MapViewFragment extends Fragment {
         }
     }
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -309,8 +323,14 @@ public class MapViewFragment extends Fragment {
         setUpMapIfNeeded();
         setHasOptionsMenu(true);
 
+        if (googleMap != null) {
+            globalAnnounceInterface = new GlobalAnnounceInterface(googleMap);
+            locationReceiver = new LocationReceiver(googleMap);
+        }
+
         return rootView;
     }
+
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -338,12 +358,6 @@ public class MapViewFragment extends Fragment {
             mv.switchMode(mv.MAP_MODE==C.MAP_MODE_BIRDVIEW?C.MAP_MODE_NAVIGATION:C.MAP_MODE_BIRDVIEW);
             return true;
         }
-
-//        if (item.getItemId() == R.id.action_UpdatePoliceLocations){
-//            MapViewFragment mv = ( (MapView) getActivity()).mapViewFragment;
-//            mv.btnUpdatePoliceLocations(null);
-//            return true;
-//        }
 
         if (item.getItemId() == R.id.action_navigatorSetNewRouteManually){
             Intent myIntent = new Intent(getActivity(), NewNavigationRoute.class);

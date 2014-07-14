@@ -23,6 +23,10 @@ public class MQBinding {
 
     private MessageConsumer messageConsumer = null;
 
+    public MessageConsumer getMessageConsumer() {
+        return messageConsumer;
+    }
+
     public MQBinding(){
         messageConsumer = new MessageConsumer();
     }

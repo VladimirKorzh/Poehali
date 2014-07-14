@@ -30,6 +30,7 @@ public class GlobalAnnounceInterface {
 
     public GlobalAnnounceInterface(GoogleMap googleMap){
         this.googleMap = googleMap;
+        getWhatsAnnouncedGlobally();
     }
 
     public void announcePolice(){
@@ -42,11 +43,11 @@ public class GlobalAnnounceInterface {
         announceMarkers.add(new AnnounceMarker(googleMap, pkt));
     }
 
-    public void getWhatsAnnouncedGlobally() {
+    private void getWhatsAnnouncedGlobally() {
         new taskUpdateGlobalAnnounce().execute("test");
     }
 
-    public class taskUpdateGlobalAnnounce extends AsyncTask<String, Void, String> {
+    private class taskUpdateGlobalAnnounce extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... urls) {
             StringBuilder response = new StringBuilder();
             InputStream in = null;

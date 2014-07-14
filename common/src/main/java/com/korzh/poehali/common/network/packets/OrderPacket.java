@@ -20,6 +20,12 @@ public class OrderPacket extends NetworkObjectBase{
     private LocationJson userLocationFrameOrigin;
     private LocationJson userLocationFrameDestination;
     private OrderDetailsJson orderDetailsJson;
+    private int action;
+
+    public final static int UPDATE = 1;
+    public final static int HOLD   = 2;
+    public final static int CANCEL = 3;
+
 
     public OrderPacket(JSONObject obj){
         super(obj);
@@ -28,17 +34,19 @@ public class OrderPacket extends NetworkObjectBase{
             this.userLocationFrameOrigin = new LocationJson(obj.getJSONObject("origin"));
             this.userLocationFrameDestination = new LocationJson(obj.getJSONObject("dest"));
             this.orderDetailsJson = new OrderDetailsJson(obj.getJSONObject("details"));
+            this.action = obj.getInt("action");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public OrderPacket(UserJson user, LocationJson origin, LocationJson dest, OrderDetailsJson order){
+    public OrderPacket(UserJson user, LocationJson origin, LocationJson dest, OrderDetailsJson order, int action){
         super();
         this.userFrame = user;
         this.userLocationFrameOrigin = origin;
         this.userLocationFrameDestination = dest;
         this.orderDetailsJson = order;
+        this.action = action;
         try {
             jsonObject.put("user", user.getJsonObject());
             jsonObject.put("origin", origin.getJsonObject());
@@ -57,6 +65,15 @@ public class OrderPacket extends NetworkObjectBase{
         return dist[0] <= C.ORDER_SEARCH_RADIUS;
     }
 
+
+    public void UpdateOrder(OrderPacket updated){
+        this.orderDetailsJson = updated.getOrderDetailsJson();
+//        this.userFrame = updated.getUserFrame();
+//        this.userLocationFrameOrigin = updated.getUserLocationFrameOrigin();
+//        this.userLocationFrameDestination = updated.getUserLocationFrameDestination();
+    }
+
+    public int getAction(){ return action; }
     public UserJson getUserFrame(){
         return userFrame;
     }

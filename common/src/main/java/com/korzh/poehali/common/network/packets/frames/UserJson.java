@@ -11,13 +11,13 @@ import org.json.JSONObject;
  */
 public class UserJson extends NetworkObjectBase{
     private String userId;
-    private boolean free;
+    private int free;
 
     public UserJson(JSONObject obj){
         super(obj);
         try {
             this.userId = obj.getString("id");
-            this.free = obj.getBoolean("st");
+            this.free = obj.getInt("st");
         } catch (JSONException e) {
             U.Log(getClass().getSimpleName(),"Error reading json object");
         }
@@ -27,7 +27,7 @@ public class UserJson extends NetworkObjectBase{
     public UserJson(Boolean free){
         super();
         this.userId = G.getInstance().userId;
-        this.free = free;
+        this.free = free ? 1:0;
 
         try {
             jsonObject.put("id", userId);
@@ -39,7 +39,7 @@ public class UserJson extends NetworkObjectBase{
     }
 
     public boolean isFree() {
-        return free;
+        return free == 1;
     }
     public String getUserId() {
         return userId;
